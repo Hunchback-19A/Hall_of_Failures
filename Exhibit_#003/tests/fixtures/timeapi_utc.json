@@ -1,0 +1,15 @@
+{
+  "year": 2026,
+  "month": 8,
+  "day": 10,
+  "hour": 3,
+  "minute": 30,
+  "seconds": 45,
+  "milliSeconds": 123,
+  "dateTime": "2026-08-10T03:30:45.1234567",
+  "date": "08/10/2026",
+  "time": "03:30",
+  "timeZone": "UTC",
+  "dayOfWeek": "Monday",
+  "dstActive": false
+}

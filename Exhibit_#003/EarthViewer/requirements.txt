@@ -1,0 +1,4 @@
+# EarthViewer optional dependencies (kept separate from core megadatetime)
+pyvista>=0.43
+numpy>=1.22
+Pillow>=9.0

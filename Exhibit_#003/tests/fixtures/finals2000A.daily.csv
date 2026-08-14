@@ -1,0 +1,5 @@
+MJD;Year;Month;Day;Type;x_pole;sigma_x_pole;y_pole;sigma_y_pole;x_rate;sigma_x_rate;y_rate;sigma_y_rate;Type;UT1-UTC;sigma_UT1-UTC;LOD;sigma_LOD;Type;dPsi;sigma_dPsi;dEpsilon;sigma_dEpsilon;dX;sigma_dX;dY;sigma_dY;Type;bulB/x_pole;bulB/y_pole;Type;bulB/UT-UTC;Type;bulB/dPsi;bulB/dEpsilon;bulB/dX;bulB/dY
+61171;2026;05;11;final;0.167024;0.000019;0.413418;0.000020;;;;;final;0.0309709;0.0000103;0.7970;0.0081;final;;;;;0.437;0.464;-0.143;0.209;final;0.167156;0.413419;final;0.0310131;final;;;0.476;-0.142
+61172;2026;05;12;final;0.168095;0.000015;0.412462;0.000017;;;;;final;0.0301509;0.0000124;0.8878;0.0071;final;;;;;0.435;0.421;-0.147;0.261;final;0.168028;0.412539;final;0.0301446;final;;;0.449;-0.176
+61173;2026;05;13;final;0.169051;0.000018;0.411759;0.000023;;;;;final;0.0291751;0.0000098;1.0393;0.0084;final;;;;;0.433;0.426;-0.150;0.246;final;0.169101;0.411670;final;0.0291572;final;;;0.433;-0.202
+61200;2026;06;09;prediction;0.180000;0.001000;0.400000;0.001000;;;;;prediction;0.0200000;0.0010000;;;;;;;;0.400;0.400;-0.100;0.200;;;;;;;;;;;;;;;;
