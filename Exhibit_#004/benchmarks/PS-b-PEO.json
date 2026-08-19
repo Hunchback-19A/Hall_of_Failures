@@ -1,0 +1,18 @@
+{
+  "name": "PS-b-PEO",
+  "architecture": "diblock",
+  "blocks": [
+    {"name": "styrene", "fraction": 0.80},
+    {"name": "EO", "fraction": 0.20}
+  ],
+  "parameters": {
+    "chi": 0.10,
+    "degree_of_polymerization": 200
+  },
+  "expected": {
+    "morphology": "cylinders",
+    "approximate_composition": "asymmetric diblock, f_PEO ≈ 0.20"
+  },
+  "experimental_notes": "Framework fixture for asymmetric PS-b-PEO in the cylinder-forming composition window of the simplified phase map. Fill references manually if comparing to a specific experiment.",
+  "references": []
+}

@@ -1,0 +1,100 @@
+GitHub release checklist (manual upload)
+=======================================
+Block copolymer self-assembly design prototype
+
+Use this when you create a repository or release on the GitHub website.
+Check items off as you go (mark [x] when done).
+
+See also: user_guide.md (project overview, CLI, references).
+
+
+Before you upload
+-----------------
+[ ] Decide public vs private. If public, treat copyright carefully
+    (do not ship licensed PDFs — see "What not to upload").
+[ ] Confirm the project runs on a fresh machine:
+      pip install -r requirements.txt
+      python -m unittest discover -s tests
+[ ] Remove temporary folders if present:
+      build/, __pycache__/, _extract/, _ref_meta/, local .pyd/.so binaries
+[ ] Confirm .gitignore excludes build/, __pycache__/, *.pyd, *.so, *.dll, etc.
+[ ] Write a short README.md (can point to user_guide.md) with install + 3 examples
+[ ] Set a version you are happy with (e.g. tag v0.1.0;
+    package __version__ is in polymer_engine/__init__.py)
+[ ] Choose a license (MIT / Apache-2.0 / etc.) and add LICENSE
+    Educational physics code is not permission to ship others' PDFs
+
+
+What to include in the GitHub package
+-------------------------------------
+[ ] polymer_design/          (all Python + data/*.json)
+[ ] polymer_engine/          (Python sources; omit compiled _*.pyd / _*.so
+                              unless you intentionally ship wheels)
+[ ] benchmarks/
+[ ] tests/
+[ ] cpp_core/                (headers/sources + README.md + SCFT_MDE_EXTENSION.md)
+[ ] setup_cpp_core.py
+[ ] requirements.txt
+[ ] user_guide.md
+[ ] github_release_checklist.txt   (this file)
+[ ] README.md + LICENSE + .gitignore
+[ ] Optional: CITATION.cff or a short "How to cite this software" note
+
+
+What NOT to upload by default
+-----------------------------
+[ ] Do NOT upload the References/ PDF tree to a PUBLIC repo unless every
+    file is redistributable (most books/papers are not). Prefer the APA list
+    in user_guide.md section 8 and keep PDFs offline.
+[ ] Do not upload personal paths, API keys, or unpublished experimental data
+[ ] Do not upload build/ artifacts or __pycache__/
+[ ] Avoid shipping large binary extensions unless you document
+    OS / Python version matrices
+
+
+GitHub website steps (manual)
+-----------------------------
+[ ] 1. Create a new repository (name, description, public/private)
+[ ] 2. Upload or push the included files
+       (drag-and-drop works for small trees; git is cleaner for updates)
+[ ] 3. Paste README content so the landing page explains install + examples
+[ ] 4. Add topics (e.g. block-copolymers, scft, polymer-physics, python)
+[ ] 5. Create a Release: Releases -> Draft a new release -> tag v0.1.0
+[ ] 6. Release title example:
+       v0.1.0 — Educational block copolymer design prototype
+[ ] 7. Release notes (short): features (evaluate / design / validate /
+       simulate SCFT), limitations (1D SCFT, toy phase-field),
+       link to user_guide.md
+[ ] 8. Attach a source zip only if needed; usually the tag's
+       auto-generated archive is enough
+[ ] 9. Verify: clone/download in another folder and run the three
+       commands from the README
+
+
+Suggested release notes skeleton
+--------------------------------
+## Summary
+- Educational block copolymer self-assembly toolkit (chiN, morphology map, domain scaling).
+- Inverse design ranking via local monomer grids.
+- Solvers: analytical, toy 1D phase-field, minimal 1D AB SCFT; optional C++ kernels.
+- Traceable scientific reports (Interpretation + Reason).
+
+## Limitations
+- Not a production SCFT / DSA code.
+- SCFT is 1D AB only; phase-field is a toy demo.
+- Analytical morphologies follow an educational classical map.
+
+## Install
+pip install -r requirements.txt
+python -m polymer_design evaluate --polymer PS-b-PMMA
+
+## Docs
+See user_guide.md
+
+
+After publishing
+----------------
+[ ] Open an Issue template or Discussions for "physics questions" vs "bug reports"
+[ ] If collaborators will extend SCFT, point them to user_guide.md section 7
+    and cpp_core/SCFT_MDE_EXTENSION.md
+[ ] Keep benchmark "references" fields empty unless you add REAL citations by hand

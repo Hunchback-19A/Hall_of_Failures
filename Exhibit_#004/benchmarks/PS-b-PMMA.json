@@ -1,0 +1,18 @@
+{
+  "name": "PS-b-PMMA",
+  "architecture": "diblock",
+  "blocks": [
+    {"name": "styrene", "fraction": 0.50},
+    {"name": "MMA", "fraction": 0.50}
+  ],
+  "parameters": {
+    "chi": 0.05,
+    "degree_of_polymerization": 300
+  },
+  "expected": {
+    "morphology": "lamellae",
+    "approximate_composition": "symmetric diblock, f ≈ 0.5"
+  },
+  "experimental_notes": "Framework fixture for near-symmetric PS-b-PMMA. Expected morphology follows the educational classical phase map used by this package (not a curated literature extraction).",
+  "references": []
+}
