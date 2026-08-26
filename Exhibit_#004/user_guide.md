@@ -4,7 +4,7 @@ This guide is written for two audiences:
 
 | Audience | What you will find here |
 |----------|-------------------------|
-| **Polymer scientists & materials professionals** | What the software *means* physically, what it can and cannot claim, and which knobs map to χ, χN, morphology, and domain spacing — with or without writing code. |
+| **Polymer scientists & materials professionals** | What the software *means* physically, what it can and cannot claim (§3 disclaimer), and which knobs map to χ, χN, morphology, and domain spacing — with or without writing code. |
 | **Programmers & computational researchers** | Package layout, CLI commands, how to extend solvers. For packaging on GitHub, see `github_release_checklist.txt`. |
 
 **Project status:** educational / research prototype (local, open, explainable). It is **not** a commercial SCFT package and **not** a black-box AI design tool.
@@ -33,11 +33,61 @@ You describe a block copolymer (composition, χ or χ-estimate, chain length *N*
 - The **minimal SCFT** solver is **1D AB only** (density waves along a line). It does not resolve 3D morphologies.
 - Inverse “design” here means **ranked exploration of local monomer grids**, not industrial formulation optimization.
 
-If you need production SCFT (2D/3D cells, ABC, DSA masks), treat this repository as a **starting architecture** and see §7 for deliberate extension points.
+If you need production SCFT (2D/3D cells, ABC, DSA masks), treat this repository as a **starting architecture** and see §8 for deliberate extension points.
+
+Please also read **§3** before treating any prediction as a physical, biological, or materials-design conclusion.
 
 ---
 
-## 3. Polymer-science concepts used by the software
+## 3. Scope, models, and responsibility (disclaimer)
+
+This section states how far the software’s claims are meant to go. It is part of the scientific framing of the tool, not optional fine print.
+
+### 3.1 Directed self-assembly is one mechanism of organization, not the definition of Nature
+
+Self-assembly provides a powerful way to understand how molecular interactions can produce organized structures. However, the existence and behavior of biological systems cannot be reduced to directed self-assembly alone.
+
+A biological system is not simply a collection of molecules arranged into a desired structure. It is a dynamic network involving energy consumption, information storage, regulation, adaptation, evolution, environmental interaction, and many other processes across different scales.
+
+Therefore, designing a polymer morphology or predicting molecular organization with this software should not be interpreted as reproducing the complexity of living systems.
+
+**Practical implication:** A successful prediction of self-assembly does not mean a material is biologically functional, safe, or equivalent to a natural structure.
+
+### 3.2 Computational models are approximations of discovered patterns, not complete descriptions of Nature
+
+The equations and assumptions implemented here are mathematical descriptions created to capture specific behaviors observed in physical systems. They are useful because they simplify reality into a form that can be analyzed and tested.
+
+However, every model has boundaries. Parameters, assumptions, numerical approximations, and omitted variables influence the accuracy and applicability of predictions.
+
+No single theoretical framework can represent the entire universe. Scientific progress occurs by developing models that describe different aspects of reality and by understanding when each model is appropriate.
+
+**Practical implication:** A model output from this tool should always be treated as a prediction or hypothesis requiring interpretation and validation, not as an absolute statement of what Nature must do.
+
+### 3.3 Higher-level theories do not replace the fundamental processes that create them
+
+The emergence of self-assembled structures does not remove the underlying physical and chemical mechanisms responsible for their existence.
+
+Copolymer synthesis, molecular interactions, and material formation still depend on fundamental principles such as electronic structure, chemical bonding, electromagnetic interactions, thermodynamics, and molecular motion.
+
+A mesoscale model describing domains, phases, or morphologies — including the educational morphology maps and SCFT modules in this repository — is not a replacement for chemistry. It is a higher-level description built upon the behavior of atoms and molecules.
+
+**Practical implication:** Understanding a pattern at one scale does not mean the lower-scale mechanisms have disappeared. A successful self-assembly prediction remains dependent on the chemistry that produced the molecules.
+
+### 3.4 Designing biologically inspired materials requires responsibility beyond molecular design
+
+The ability to design self-assembling materials may inspire visions of increasingly complex biological applications, such as artificial tissues, synthetic blood-like materials, or engineered structures that resemble components of living organisms. However, the organization of molecules into a designed material is not equivalent to the creation of life or the complete recreation of biological systems.
+
+Living systems are not defined only by their physical structures. They depend on complex interactions involving metabolism, genetic information, cellular communication, repair mechanisms, evolution, and continuous exchange with their environment. A material that imitates one function or structure of biology does not automatically possess the properties, behaviors, or responsibilities associated with a living system.
+
+As computational and experimental tools advance, the question is not only whether humans can design increasingly complex materials, but also whether we understand the systems we are attempting to influence and whether we are prepared to responsibly manage the outcomes.
+
+These questions have been explored for centuries in literature, including [Mary Shelley’s 1818 novel *Frankenstein; or, The Modern Prometheus*](https://www.gutenberg.org/files/41445/41445-h/41445-h.htm). The story is not a warning against discovery itself, but a reflection on the responsibilities that accompany the ability to create.
+
+**Practical implication:** A successful self-assembly prediction or the creation of a biologically inspired material should not be interpreted as the creation of a living entity or a complete biological replacement. Progress in this field requires both technical capability and careful consideration of the systems being approached.
+
+---
+
+## 4. Polymer-science concepts used by the software
 
 These are the quantities professionals already know; the code uses the same language.
 
@@ -62,9 +112,9 @@ These are the quantities professionals already know; the code uses the same lang
 
 ---
 
-## 4. What the scripts and packages do
+## 5. What the scripts and packages do
 
-### 4.1 Layout (project root)
+### 5.1 Layout (project root)
 
 ```text
 Block co-polymer design/
@@ -79,11 +129,11 @@ Block co-polymer design/
 └── github_release_checklist.txt
 ```
 
-### 4.2 `polymer_design` — the application layer
+### 5.2 `polymer_design` — the application layer
 
 | Piece | Role |
 |-------|------|
-| `main.py` / `python -m polymer_design` | Command-line interface (see §5). |
+| `main.py` / `python -m polymer_design` | Command-line interface (see §6). |
 | `polymer.py` + `data/polymers.json`, `data/monomers.json` | Load polymer definitions and monomer library. |
 | `evaluator.py` | Runs the simplified physics evaluation (χN, morphology, energy proxy, domain size). |
 | `design/` | Inverse design: target → candidate grid → rank → report. |
@@ -91,7 +141,7 @@ Block co-polymer design/
 | `optimization/` | Thin wrappers for random search, PSO, and MCTS (stubs / educational explorers). |
 | `visualization/console_display.py` | Pretty-prints evaluation reports in the terminal. |
 
-### 4.3 `polymer_engine` — the physics core
+### 5.3 `polymer_engine` — the physics core
 
 | Module | Role for professionals | Role for programmers |
 |--------|------------------------|----------------------|
@@ -112,7 +162,7 @@ Block co-polymer design/
 | `scft` | Implemented (minimal) | 1D AB mean-field SCFT; density wave + free energy. |
 | `monte_carlo` | Placeholder | Raises `NotImplementedError` (interface reserved). |
 
-### 4.4 Optional C++ (`cpp_core/`)
+### 5.4 Optional C++ (`cpp_core/`)
 
 Default installs need only NumPy. If you have a C++17 compiler and `pybind11`:
 
@@ -130,9 +180,9 @@ Missing C++ → automatic NumPy fallback (`auto` backend).
 
 ---
 
-## 5. Getting started
+## 6. Getting started
 
-### 5.1 Requirements
+### 6.1 Requirements
 
 - Python 3.10+ recommended (tested with modern CPython).
 - Install:
@@ -141,9 +191,9 @@ Missing C++ → automatic NumPy fallback (`auto` backend).
 pip install -r requirements.txt
 ```
 
-Optional C++ build: see §4.4.
+Optional C++ build: see §5.4.
 
-### 5.2 Where to run commands
+### 6.2 Where to run commands
 
 From the **project root** (folder that contains `polymer_design/` and `polymer_engine/`):
 
@@ -159,7 +209,7 @@ python main.py list
 python main.py evaluate --polymer PS-b-PMMA
 ```
 
-### 5.3 Commands (what each does)
+### 6.3 Commands (what each does)
 
 | Command | For professionals | Example |
 |---------|-------------------|---------|
@@ -191,7 +241,7 @@ python main.py evaluate --polymer PS-b-PMMA
 - High χN (e.g. 25): expect stronger 1D modulation.  
 - Optional box scan (Python API): `settings={"optimize_box": True, "box_lengths": [3.5, 4.5, 5.5]}` minimizes free energy over 1D cell lengths *L* only.
 
-### 5.4 Defining your own polymer (no deep coding)
+### 6.4 Defining your own polymer (no deep coding)
 
 Save a JSON file, then:
 
@@ -218,7 +268,7 @@ Minimal example:
 
 `fraction` values should sum to 1. χ may be omitted if you rely on monomer solubility estimates (when those data exist in `monomers.json`).
 
-### 5.5 Tests (programmers)
+### 6.5 Tests (programmers)
 
 From project root:
 
@@ -228,7 +278,7 @@ python -m unittest discover -s tests
 
 ---
 
-## 6. Typical workflows
+## 7. Typical workflows
 
 ### A. Quick morphology / χN check (most professionals start here)
 
@@ -250,7 +300,7 @@ python -m unittest discover -s tests
 
 ---
 
-## 7. Features you (or future field users) can add
+## 8. Features you (or future field users) can add
 
 These are intentional extension points — kept out of the educational core so ABC / 2D–3D work stays with people who need it.
 
@@ -280,7 +330,7 @@ These are intentional extension points — kept out of the educational core so A
 
 ---
 
-## 8. References (APA)
+## 9. References (APA)
 
 Case, L. J., Delaney, K. T., Fredrickson, G. H., Bates, F. S., & Dorfman, K. D. (2021). Open-source platform for block polymer formulation design using particle swarm optimization. *The European Physical Journal E*, *44*(9), Article 115. https://doi.org/10.1140/epje/s10189-021-00123-9  
 *Used for:* keeping the optimizer separate from the physics evaluator (candidate generation + external scoring); informed `polymer_design/optimization/pso.py`.
@@ -298,7 +348,7 @@ The educational ODT constant χN ≈ 10.495 for a symmetric diblock melt (hard-c
 
 ---
 
-## 9. Packaging for GitHub
+## 10. Packaging for GitHub
 
 For a printable step-by-step release checklist (what to include, what to omit, website steps, release-notes skeleton), see:
 
@@ -306,7 +356,7 @@ For a printable step-by-step release checklist (what to include, what to omit, w
 
 ---
 
-## 10. Quick glossary
+## 11. Quick glossary
 
 | Term | Plain meaning |
 |------|----------------|
@@ -319,4 +369,5 @@ For a printable step-by-step release checklist (what to include, what to omit, w
 
 ---
 
-*End of user guide.* For questions about physical interpretation, start from the console report’s Assumptions and Reasons; for code changes, start from `polymer_engine/solvers/` and keep new architectures in separate modules.
+*End of user guide.* Start from §3 and the console report’s Assumptions and Reasons for physical interpretation; for code changes, start from `polymer_engine/solvers/` and keep new architectures in separate modules.
+
