@@ -1,0 +1,75 @@
+# examples_of_errors.cog
+# Invalid Ranvier programs collected for the compiler to refuse.
+#
+# Python would stop "text" + 5.
+# Ranvier stops a map from being treated as a territory,
+# a measurement from being treated as an identity,
+# and a prediction from being treated as a destiny.
+
+load atlas
+load connectivity
+load function
+load behavior
+
+
+# --- REGION → FUNCTION ----------------------------------------------------
+# creativity is a modeled capability. frontal_lobe is anatomy.
+# The Brain Book discusses creativity under Thinking; it is not a lobe.
+
+REGION frontal_lobe
+FUNCTION creativity = frontal_lobe
+
+
+# --- unstructured coordinate → FUNCTION -----------------------------------
+
+FUNCTION creativity = random_coordinate
+
+
+# --- STATE → ID -----------------------------------------------------------
+# A measured condition at one time is not a person.
+
+STATE struggling_today
+ID person = struggling_today
+
+
+# --- verdict word used as identity ----------------------------------------
+
+ID person = failure
+
+
+# --- PREDICTION → ID ------------------------------------------------------
+
+PREDICTION success_probability
+ID destiny_label = success_probability
+
+
+# --- prediction compiled as DESTINY ---------------------------------------
+
+DESTINY = success_probability
+
+
+# --- STRUCTURE → PERSONALITY ----------------------------------------------
+# The Brain Book: genes, culture, and experience influence the brain.
+# None of that licenses compiling personality from a mesh.
+
+STRUCTURE cerebrum
+PERSONALITY extraversion = cerebrum
+
+
+# --- CoordinateError ------------------------------------------------------
+# User requests a location the atlas does not contain.
+
+lookup frontal_lobe["fake_location"]
+lookup brain_region["fake_location"]
+
+
+# --- AttributionError -----------------------------------------------------
+# One observed behavior is not an entire cause.
+
+observe choice as entire_cause
+
+
+# --- PREDICTION treated as identity-level name ----------------------------
+
+PREDICTION future_probability
+ID destiny = future_probability

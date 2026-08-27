@@ -1,0 +1,155 @@
+{
+  "meta": {
+    "purpose": "Connections — white-matter pathways, region-to-region relations, and network groupings.",
+    "label_family": "TRACT / CONNECTION / NETWORK",
+    "primary_source": "NIH 3D 3DPX-003145 Fractional Anisotropy (diffusion MRI) white-matter model, Nevit Dilmen",
+    "disclaimer": "Named tracts are educational graph edges informed by textbook pathways. The FA mesh is an intensity surface of anisotropy, not a labelled tractography atlas. Alignment of axons (e.g. corpus callosum) raises FA; that is a physical measurement, not a function assignment.",
+    "fa_mesh": {
+      "id": "3DPX-003145",
+      "file": "References/3DPX-003145_Fractional_Anisotrpy_Tractography_White_Matter_NevitDilmen.stl",
+      "nih3d": "https://3d.nih.gov/entries/3DPX-003145",
+      "description": "Intensity of fractional anisotropy of human brain from diffusion MRI converted to 3D model.",
+      "triangles": 113808,
+      "bounds": {
+        "min": [-46.76, -66.5253, 0.0],
+        "max": [46.76, 66.5253, 91.317]
+      },
+      "note": "Interior to the cortical mesh (compare 3DPX-003765 X ±83 mm vs FA X ±47 mm). White matter is STRUCTURE/TRACT space, not FUNCTION space."
+    },
+    "educational_source": "Rita Carter et al., The Brain Book (DK, 2019) — language fibre tracts (arcuate fasciculus); DTI fibre colour conventions (interhemispheric, limbic, cerebellar)",
+    "sources": [
+      "https://3d.nih.gov/entries/3DPX-003145",
+      "https://commons.wikimedia.org/wiki/File:3DPX-003145_Fractional_Anisotrpy_Tractography_White_Matter_NevitDilmen.stl"
+    ]
+  },
+  "tracts": [
+    {
+      "tract": "corpus_callosum",
+      "label_type": "TRACT",
+      "connects": ["left_hemisphere_cortex", "right_hemisphere_cortex"],
+      "notes": "Commissural fibres. High FA where axons align (educational FA definition from the NIH 3D entry)."
+    },
+    {
+      "tract": "arcuate_fasciculus",
+      "label_type": "TRACT",
+      "connects": ["frontal_lobe", "temporal_lobe"],
+      "notes": "The Brain Book: in humans this tract links frontal generation areas with temporal comprehension areas. It is a TRACT, not language itself."
+    },
+    {
+      "tract": "corticospinal_tract",
+      "label_type": "TRACT",
+      "connects": ["motor_cortex", "brainstem"],
+      "notes": "Descending motor pathway. Movement is still a PROCESS distributed across cortex, basal ganglia, cerebellum, and this tract."
+    },
+    {
+      "tract": "cingulum",
+      "label_type": "TRACT",
+      "connects": ["cingulate_cortex", "hippocampus"],
+      "notes": "Limbic association fibres. Green-coded limbic fibres are mentioned in The Brain Book DTI plate."
+    },
+    {
+      "tract": "uncinate_fasciculus",
+      "label_type": "TRACT",
+      "connects": ["frontal_lobe", "temporal_lobe"],
+      "notes": "Orbitofrontal–temporal connection. A CONNECTION candidate, not a personality trait."
+    },
+    {
+      "tract": "superior_longitudinal_fasciculus",
+      "label_type": "TRACT",
+      "connects": ["frontal_lobe", "parietal_lobe"],
+      "notes": "Frontoparietal association fibres used in attention and spatial models."
+    },
+    {
+      "tract": "optic_radiation",
+      "label_type": "TRACT",
+      "connects": ["thalamus", "visual_cortex"],
+      "notes": "Visual pathway segment. Seeing remains a FUNCTION of a pathway-plus-network, not a REGION."
+    },
+    {
+      "tract": "cerebellar_peduncles",
+      "label_type": "TRACT",
+      "connects": ["cerebellum", "brainstem"],
+      "notes": "The Brain Book DTI plate: fibres running from the cerebellum toward the spine."
+    }
+  ],
+  "connections": [
+    {
+      "connection": "fronto_temporal_language_link",
+      "label_type": "CONNECTION",
+      "via": "arcuate_fasciculus",
+      "connects": ["frontal_lobe", "temporal_lobe"]
+    },
+    {
+      "connection": "fronto_parietal_attention_link",
+      "label_type": "CONNECTION",
+      "via": "superior_longitudinal_fasciculus",
+      "connects": ["frontal_lobe", "parietal_lobe"]
+    }
+  ],
+  "networks": [
+    {
+      "network": "decision_network",
+      "label_type": "NETWORK",
+      "regions": ["prefrontal_cortex", "basal_ganglia", "thalamus", "amygdala"],
+      "notes": "Action selection / evaluation loop. Not equal to frontal_lobe."
+    },
+    {
+      "network": "prefrontal_network",
+      "label_type": "NETWORK",
+      "regions": ["prefrontal_cortex", "cingulate_cortex", "thalamus", "basal_ganglia"]
+    },
+    {
+      "network": "reward_network",
+      "label_type": "NETWORK",
+      "regions": ["basal_ganglia", "prefrontal_cortex", "amygdala", "hypothalamus"],
+      "notes": "The Brain Book: desire and reward involve distributed valuation circuits."
+    },
+    {
+      "network": "attention_network",
+      "label_type": "NETWORK",
+      "regions": ["parietal_lobe", "frontal_lobe", "thalamus", "cingulate_cortex"]
+    },
+    {
+      "network": "language_network",
+      "label_type": "NETWORK",
+      "regions": ["frontal_lobe", "temporal_lobe", "parietal_lobe"],
+      "tracts": ["arcuate_fasciculus"],
+      "notes": "The Brain Book: main language areas are usually left-lateralized, but complete hearing and prosody recruit the right hemisphere. Not a single coordinate."
+    },
+    {
+      "network": "memory_network",
+      "label_type": "NETWORK",
+      "regions": ["hippocampus", "thalamus", "prefrontal_cortex", "temporal_lobe", "cingulate_cortex"],
+      "tracts": ["cingulum"]
+    },
+    {
+      "network": "default_mode_network",
+      "label_type": "NETWORK",
+      "regions": ["prefrontal_cortex", "cingulate_cortex", "parietal_lobe", "temporal_lobe"],
+      "notes": "The Brain Book discusses an idling / internally oriented brain. This is a NETWORK label, not a self."
+    },
+    {
+      "network": "sensorimotor_network",
+      "label_type": "NETWORK",
+      "regions": ["motor_cortex", "parietal_lobe", "cerebellum", "basal_ganglia", "brainstem"],
+      "tracts": ["corticospinal_tract", "cerebellar_peduncles"]
+    },
+    {
+      "network": "visual_network",
+      "label_type": "NETWORK",
+      "regions": ["visual_cortex", "occipital_lobe", "thalamus", "temporal_lobe", "parietal_lobe"],
+      "tracts": ["optic_radiation"]
+    },
+    {
+      "network": "limbic_network",
+      "label_type": "NETWORK",
+      "regions": ["amygdala", "hippocampus", "cingulate_cortex", "hypothalamus", "thalamus"],
+      "tracts": ["cingulum"]
+    },
+    {
+      "network": "sensory_network",
+      "label_type": "NETWORK",
+      "regions": ["thalamus", "parietal_lobe", "temporal_lobe", "occipital_lobe", "insula"]
+    }
+  ]
+}

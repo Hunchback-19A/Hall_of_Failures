@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "purpose": "Observed outcomes. Keep separate from biological mechanisms.",
+    "label_family": "STATE / PATTERN",
+    "rule": "One observed behavior is not an entire cause. Behavior is not FUNCTION, REGION, or ID.",
+    "educational_source": "Rita Carter et al., The Brain Book (DK, 2019) — The Infant Brain; Movement; Language; The Individual Brain",
+    "disclaimer": "These records are laboratory-style observations for the Ranvier language. They do not diagnose, score worth, or predict a life."
+  },
+  "behaviors": [
+    {
+      "behavior": "choice",
+      "observed_state": "decision_output",
+      "notes": "An action selected in a task. Insufficient as a causal model of decision_making."
+    },
+    {
+      "behavior": "infant_looking",
+      "observed_state": "current_look",
+      "notes": "A common developmental measure. A PATTERN of looking is not language identity."
+    },
+    {
+      "behavior": "reaching",
+      "observed_state": "reach_output",
+      "notes": "Motor outcome. Related to movement FUNCTION only through a network model."
+    },
+    {
+      "behavior": "vocalization",
+      "observed_state": "vocal_output",
+      "notes": "An audible outcome. Not the language NETWORK itself."
+    },
+    {
+      "behavior": "gaze",
+      "observed_state": "gaze_direction",
+      "notes": "Observable orientation. Not attention as identity."
+    },
+    {
+      "behavior": "sleep",
+      "observed_state": "sleep_wake_cycle",
+      "notes": "A state cycle. Temporary, measurable, not character."
+    }
+  ],
+  "patterns": [
+    {
+      "pattern": "looking_preference",
+      "label_type": "PATTERN",
+      "from_behavior": "infant_looking",
+      "notes": "Repeated looking observations. May ground a PREDICTION, never an ID."
+    },
+    {
+      "pattern": "learning_trend",
+      "label_type": "PATTERN",
+      "notes": "Repeated performance change. A trend is not destiny."
+    }
+  ]
+}

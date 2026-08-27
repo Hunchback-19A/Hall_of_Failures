@@ -1,0 +1,78 @@
+# infant.cog
+# A valid Ranvier program.
+#
+# Developmental modeling of an infant brain.
+# Educational framing: Rita Carter et al., The Brain Book (DK, 2019),
+# "The Infant Brain" / Development and Ageing.
+#
+# Physical bounds come from NIH 3D MRI-derived meshes (Nevit Dilmen):
+#   3DPX-003765 whole brain, 3DPX-003145 FA white matter.
+#
+# Ranvier does not simulate a baby, score a baby, or compile a future.
+# It only records what kind of information each name is allowed to be.
+
+load atlas
+load connectivity
+load function
+load behavior
+
+# Persistent subject code — an ID may exist, but nothing else may become it.
+ID subject_001
+
+# Anatomy is REGION / STRUCTURE, never function or personality.
+REGION frontal_lobe
+REGION temporal_lobe
+REGION parietal_lobe
+REGION hippocampus
+REGION cerebellum
+REGION brainstem
+STRUCTURE cerebrum
+
+# White-matter pathways are TRACT.
+TRACT arcuate_fasciculus
+TRACT corpus_callosum
+
+# Capabilities are NETWORK processes.
+NETWORK sensory_network
+NETWORK attention_network
+NETWORK language_network
+NETWORK memory_network
+NETWORK default_mode_network
+
+FUNCTION sensory_processing
+FUNCTION attention
+FUNCTION memory
+FUNCTION language
+
+# Development is temporary and measurable.
+TEMP currently_learning
+TEMP myelination_in_progress
+PROCESS myelination
+PROCESS synaptic_pruning
+STATE current_alertness
+STATE sleep_wake_cycle
+PATTERN looking_preference
+PREDICTION language_readiness
+
+# Legal relations: function lives on a network, not on a lobe.
+associate sensory_processing with sensory_network
+associate attention with attention_network
+associate memory with memory_network
+associate language with language_network
+
+connect frontal_lobe to temporal_lobe via arcuate_fasciculus
+
+# Measurements stay measurements.
+measure current_alertness of attention_network
+measure currently_learning of sensory_network
+measure myelination_in_progress of language_network
+
+# Looking is observed behavior, not identity and not language itself.
+observe infant_looking as looking_preference
+
+# A future possibility may be estimated from a pattern.
+# It remains a PREDICTION.
+predict language_readiness from looking_preference
+
+lookup frontal_lobe
+lookup hippocampus["centroid"]

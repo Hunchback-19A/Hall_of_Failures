@@ -1,0 +1,295 @@
+{
+  "meta": {
+    "purpose": "Physical structure — anatomical regions and mesh-derived coordinate bounds.",
+    "label_family": "REGION / STRUCTURE",
+    "primary_source": "NIH 3D 3DPX-003765 (Nevit Dilmen), MRI-derived whole-brain mesh",
+    "disclaimer": "Region boxes are educational overlays on the mesh bounding box. They are not a voxel-accurate parcellation of the STL/X3D files, and they do not identify functions, traits, or persons.",
+    "coordinate_space": {
+      "name": "cognition_mesh_mm",
+      "units": "millimetres (mesh space)",
+      "axes": {
+        "x": "left (−) / right (+)",
+        "y": "posterior (−) / anterior (+)",
+        "z": "inferior (mesh base) / superior (+)"
+      },
+      "reference_meshes": {
+        "healthy_brain": {
+          "id": "3DPX-003765",
+          "file": "References/3DPX-003765_3DModel_of_Brain_Nevit_Dilmen.stl",
+          "triangles": 82438,
+          "bounds": {
+            "min": [-83.7365, -66.4591, 0.1395],
+            "max": [83.7973, 66.5479, 208.4634]
+          }
+        },
+        "atrophic_brain": {
+          "id": "3DPX-002386",
+          "file": "References/3DPX-002386_Atrophic_Brain_Nevit_Dilmen.stl",
+          "nih3d": "https://3d.nih.gov/entries/3DPX-002386",
+          "description": "Atrophic human brain generated from MRI data (300000 triangles). Atrophy is a structural STATE of a mesh, not an identity.",
+          "triangles": 300000,
+          "bounds": {
+            "min": [-81.9356, -66.97, 0.0],
+            "max": [81.9142, 66.97, 153.4276]
+          }
+        }
+      },
+      "active_bounds": {
+        "min": [-83.74, -66.46, 0.14],
+        "max": [83.80, 66.55, 208.46]
+      }
+    },
+    "educational_source": "Rita Carter et al., The Brain Book (DK, 2019) — Brain Anatomy; A Journey Through the Brain",
+    "sources": [
+      "https://3d.nih.gov/entries/3DPX-003765",
+      "https://3d.nih.gov/entries/3DPX-002386",
+      "https://commons.wikimedia.org/wiki/File:3DPX-002386_Atrophic_Brain_Nevit_Dilmen.stl",
+      "https://commons.wikimedia.org/wiki/File:3DPX-003765_3DModel_of_Brain_Nevit_Dilmen.stl"
+    ]
+  },
+  "structures": [
+    {
+      "structure": "cerebrum",
+      "label_type": "STRUCTURE",
+      "notes": "Paired cerebral hemispheres. Most structures are paired (The Brain Book).",
+      "bounds": {
+        "min": [-83.74, -66.46, 40.0],
+        "max": [83.80, 66.55, 208.46]
+      }
+    },
+    {
+      "structure": "meninges",
+      "label_type": "STRUCTURE",
+      "notes": "Protective membranes. Physical covering, not a cognitive function."
+    },
+    {
+      "structure": "ventricular_system",
+      "label_type": "STRUCTURE",
+      "notes": "Fluid-filled cavities visible on structural MRI/CT. Anatomy, not thought."
+    }
+  ],
+  "regions": [
+    {
+      "region": "frontal_lobe",
+      "label_type": "REGION",
+      "hemisphere": "both",
+      "notes": "Largest lobe. The Brain Book: devoted to control of action — precise muscle control posteriorly, high-level planning anteriorly. Planning is a NETWORK process, not the lobe itself.",
+      "bounds": {
+        "min": [-83.74, 8.0, 60.0],
+        "max": [83.80, 66.55, 200.0]
+      },
+      "centroid": [0.0, 37.3, 130.0],
+      "landmarks": {
+        "centroid": [0.0, 37.3, 130.0],
+        "pole": [0.0, 66.55, 120.0],
+        "bounds": {"min": [-83.74, 8.0, 60.0], "max": [83.80, 66.55, 200.0]}
+      },
+      "coordinates": [
+        {"role": "bbox_min", "x": -83.74, "y": 8.0, "z": 60.0},
+        {"role": "bbox_max", "x": 83.80, "y": 66.55, "z": 200.0},
+        {"role": "centroid", "x": 0.0, "y": 37.3, "z": 130.0}
+      ]
+    },
+    {
+      "region": "prefrontal_cortex",
+      "label_type": "REGION",
+      "part_of": "frontal_lobe",
+      "notes": "Includes frontal-polar cortex (forward planning) and orbitofrontal gyrus. Still a REGION, not decision_making.",
+      "bounds": {
+        "min": [-70.0, 28.0, 70.0],
+        "max": [70.0, 66.55, 190.0]
+      },
+      "centroid": [0.0, 47.3, 130.0],
+      "landmarks": {
+        "centroid": [0.0, 47.3, 130.0],
+        "frontal_polar": [0.0, 64.0, 125.0],
+        "orbitofrontal": [0.0, 50.0, 80.0]
+      }
+    },
+    {
+      "region": "motor_cortex",
+      "label_type": "REGION",
+      "part_of": "frontal_lobe",
+      "notes": "Posterior frontal cortex. Movement execution is distributed with cerebellum, basal ganglia, and tracts.",
+      "bounds": {
+        "min": [-70.0, 0.0, 110.0],
+        "max": [70.0, 18.0, 200.0]
+      },
+      "centroid": [0.0, 9.0, 155.0],
+      "landmarks": {
+        "centroid": [0.0, 9.0, 155.0]
+      }
+    },
+    {
+      "region": "parietal_lobe",
+      "label_type": "REGION",
+      "notes": "Somatosensory and spatial processing contribute here; they are not identical to the lobe.",
+      "bounds": {
+        "min": [-75.0, -20.0, 110.0],
+        "max": [75.0, 12.0, 208.46]
+      },
+      "centroid": [0.0, -4.0, 159.0],
+      "landmarks": {
+        "centroid": [0.0, -4.0, 159.0]
+      }
+    },
+    {
+      "region": "temporal_lobe",
+      "label_type": "REGION",
+      "notes": "Auditory cortex and memory-related medial structures neighbour this lobe. Language comprehension is a NETWORK, not this REGION.",
+      "bounds": {
+        "min": [-83.74, -40.0, 20.0],
+        "max": [83.80, 30.0, 110.0]
+      },
+      "centroid": [0.0, -5.0, 65.0],
+      "landmarks": {
+        "centroid": [0.0, -5.0, 65.0],
+        "pole": [50.0, 20.0, 45.0]
+      }
+    },
+    {
+      "region": "occipital_lobe",
+      "label_type": "REGION",
+      "notes": "Contains visual cortex. Seeing is a pathway plus cortex, not a single coordinate.",
+      "bounds": {
+        "min": [-55.0, -66.46, 50.0],
+        "max": [55.0, -22.0, 175.0]
+      },
+      "centroid": [0.0, -44.2, 112.5],
+      "landmarks": {
+        "centroid": [0.0, -44.2, 112.5]
+      }
+    },
+    {
+      "region": "visual_cortex",
+      "label_type": "REGION",
+      "part_of": "occipital_lobe",
+      "notes": "The Brain Book: stimuli are turned into electrical signals and routed to specialized cortical areas. Still not 'vision' as a FUNCTION label.",
+      "bounds": {
+        "min": [-40.0, -66.46, 60.0],
+        "max": [40.0, -30.0, 150.0]
+      },
+      "centroid": [0.0, -48.2, 105.0],
+      "landmarks": {
+        "centroid": [0.0, -48.2, 105.0]
+      }
+    },
+    {
+      "region": "insula",
+      "label_type": "REGION",
+      "notes": "Folded cortex deep to the lateral sulcus. Interoception and other processes involve this REGION among others.",
+      "bounds": {
+        "min": [-50.0, -10.0, 70.0],
+        "max": [50.0, 25.0, 130.0]
+      },
+      "centroid": [0.0, 7.5, 100.0],
+      "landmarks": {
+        "centroid": [0.0, 7.5, 100.0]
+      }
+    },
+    {
+      "region": "cingulate_cortex",
+      "label_type": "REGION",
+      "notes": "The Brain Book: cingulate gyrus forms part of the limbic lobe around the corpus callosum.",
+      "bounds": {
+        "min": [-20.0, -30.0, 90.0],
+        "max": [20.0, 40.0, 160.0]
+      },
+      "centroid": [0.0, 5.0, 125.0],
+      "landmarks": {
+        "centroid": [0.0, 5.0, 125.0]
+      }
+    },
+    {
+      "region": "hippocampus",
+      "label_type": "REGION",
+      "notes": "The Brain Book: involved in encoding experiences as memories. Memory the FUNCTION is a network process, not this structure alone.",
+      "bounds": {
+        "min": [-42.0, -25.0, 35.0],
+        "max": [42.0, 10.0, 70.0]
+      },
+      "centroid": [0.0, -7.5, 52.5],
+      "landmarks": {
+        "centroid": [0.0, -7.5, 52.5]
+      }
+    },
+    {
+      "region": "amygdala",
+      "label_type": "REGION",
+      "notes": "The Brain Book: stimuli are weighed and valued here among other circuits. Emotion is not identical to this nucleus.",
+      "bounds": {
+        "min": [-38.0, 0.0, 30.0],
+        "max": [38.0, 18.0, 55.0]
+      },
+      "centroid": [0.0, 9.0, 42.5],
+      "landmarks": {
+        "centroid": [0.0, 9.0, 42.5]
+      }
+    },
+    {
+      "region": "thalamus",
+      "label_type": "REGION",
+      "notes": "Relay nuclei. Almost every cortical function interacts with thalamic loops.",
+      "bounds": {
+        "min": [-18.0, -10.0, 70.0],
+        "max": [18.0, 20.0, 110.0]
+      },
+      "centroid": [0.0, 5.0, 90.0],
+      "landmarks": {
+        "centroid": [0.0, 5.0, 90.0]
+      }
+    },
+    {
+      "region": "hypothalamus",
+      "label_type": "REGION",
+      "notes": "The Brain Book: involved in circadian, endocrine, and basic regulatory processes.",
+      "bounds": {
+        "min": [-8.0, 0.0, 55.0],
+        "max": [8.0, 16.0, 75.0]
+      },
+      "centroid": [0.0, 8.0, 65.0],
+      "landmarks": {
+        "centroid": [0.0, 8.0, 65.0]
+      }
+    },
+    {
+      "region": "basal_ganglia",
+      "label_type": "REGION",
+      "notes": "Subcortical nuclei participating in action selection. Not 'personality'.",
+      "bounds": {
+        "min": [-40.0, -5.0, 60.0],
+        "max": [40.0, 30.0, 120.0]
+      },
+      "centroid": [0.0, 12.5, 90.0],
+      "landmarks": {
+        "centroid": [0.0, 12.5, 90.0]
+      }
+    },
+    {
+      "region": "cerebellum",
+      "label_type": "REGION",
+      "notes": "The Brain Book: coordinates movement, balance, and posture. 'Little brain' — still not identity.",
+      "bounds": {
+        "min": [-50.0, -66.46, 0.14],
+        "max": [50.0, -10.0, 80.0]
+      },
+      "centroid": [0.0, -38.2, 40.0],
+      "landmarks": {
+        "centroid": [0.0, -38.2, 40.0]
+      }
+    },
+    {
+      "region": "brainstem",
+      "label_type": "REGION",
+      "notes": "The Brain Book: medulla houses respiratory, cardiac, and vasomotor nuclei. Consciousness can be lost after brainstem injury — that is not a license to locate the self at one coordinate.",
+      "bounds": {
+        "min": [-18.0, -20.0, 0.14],
+        "max": [18.0, 20.0, 70.0]
+      },
+      "centroid": [0.0, 0.0, 35.0],
+      "landmarks": {
+        "centroid": [0.0, 0.0, 35.0]
+      }
+    }
+  ]
+}

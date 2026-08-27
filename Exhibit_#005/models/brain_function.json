@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "purpose": "Modeled cognitive functions. Functions are NETWORK_PROCESS values. They must not map one-to-one onto regions.",
+    "label_family": "FUNCTION / PROCESS / SIGNAL",
+    "rule": "Never compile FUNCTION from a single REGION.",
+    "educational_source": "Rita Carter et al., The Brain Book (DK, 2019) — Brain Functions; Language; Memory; Thinking; Attention and Consciousness; Movement and Control",
+    "disclaimer": "These entries are educational models for a fictional language. They do not claim to locate consciousness, talent, or moral worth."
+  },
+  "functions": [
+    {
+      "function": "decision_making",
+      "type": "NETWORK_PROCESS",
+      "associated_networks": ["decision_network", "prefrontal_network", "reward_network"],
+      "notes": "The Brain Book: apparently rational decisions are driven by emotional circuits as well as prefrontal evaluation. Not frontal_lobe."
+    },
+    {
+      "function": "memory",
+      "type": "NETWORK_PROCESS",
+      "associated_networks": ["memory_network", "limbic_network"],
+      "notes": "Encoding, storage, and retrieval recruit hippocampus plus widespread cortex. Not a REGION assignment."
+    },
+    {
+      "function": "attention",
+      "type": "NETWORK_PROCESS",
+      "associated_networks": ["attention_network", "default_mode_network"],
+      "notes": "The Brain Book treats attention as tightly coupled with conscious report, not as a parietal coordinate."
+    },
+    {
+      "function": "language",
+      "type": "NETWORK_PROCESS",
+      "associated_networks": ["language_network"],
+      "notes": "Frontal, temporal, and parietal areas plus arcuate_fasciculus. Usually left-lateralized in adults, still a NETWORK."
+    },
+    {
+      "function": "creativity",
+      "type": "NETWORK_PROCESS",
+      "associated_networks": ["default_mode_network", "prefrontal_network", "attention_network"],
+      "notes": "The Brain Book discusses creativity as a high-level thinking topic. It is not a frontal_lobe identity and cannot be assigned from a random coordinate."
+    },
+    {
+      "function": "movement",
+      "type": "NETWORK_PROCESS",
+      "associated_networks": ["sensorimotor_network"],
+      "notes": "Planning, basal ganglia selection, cerebellar coordination, corticospinal output."
+    },
+    {
+      "function": "emotion",
+      "type": "NETWORK_PROCESS",
+      "associated_networks": ["limbic_network", "reward_network"],
+      "notes": "The Brain Book: limbic structures produce emotions as responses beyond simple approach/avoid. Distributed, not amygdala = feeling."
+    },
+    {
+      "function": "visual_perception",
+      "type": "NETWORK_PROCESS",
+      "associated_networks": ["visual_network"],
+      "notes": "Retina → thalamus → visual cortex → dorsal/ventral streams. Expectation from frontal networks feeds back into seeing."
+    },
+    {
+      "function": "social_cognition",
+      "type": "NETWORK_PROCESS",
+      "associated_networks": ["limbic_network", "prefrontal_network", "default_mode_network"],
+      "notes": "The Brain Book: the social brain and mirror-neuron discussions are network-level, not a license to compile personality."
+    },
+    {
+      "function": "sensory_processing",
+      "type": "NETWORK_PROCESS",
+      "associated_networks": ["sensory_network", "visual_network"],
+      "notes": "Thalamic relay plus specialized cortices. Infant looking behaviour is an observation, not this function itself."
+    }
+  ],
+  "processes": [
+    {
+      "process": "encoding",
+      "label_type": "PROCESS",
+      "associated_networks": ["memory_network"],
+      "notes": "Laying down a memory (The Brain Book). Dynamic activity, not an ID."
+    },
+    {
+      "process": "myelination",
+      "label_type": "PROCESS",
+      "associated_networks": ["sensorimotor_network", "language_network"],
+      "notes": "Developmental white-matter change. FA can rise as fibres align and myelin matures — a PROCESS, not a destiny."
+    },
+    {
+      "process": "synaptic_pruning",
+      "label_type": "PROCESS",
+      "notes": "Typical developmental reduction of synapses. Temporary biology, not character."
+    }
+  ],
+  "signals": [
+    {
+      "signal": "bold_proxy",
+      "label_type": "SIGNAL",
+      "notes": "Stand-in for fMRI BOLD. A simulated activity pattern, not a thought."
+    },
+    {
+      "signal": "simulated_gamma",
+      "label_type": "SIGNAL",
+      "notes": "Stand-in for an oscillatory pattern. SIGNAL ≠ consciousness."
+    }
+  ]
+}
