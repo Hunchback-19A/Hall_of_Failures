@@ -43,3 +43,24 @@ Some may become useful tools.
 Some may remain experiments.
 
 Both belong in the Hall of Failures.
+
+## Licenses
+
+Each exhibit is a separate program.
+
+- Every exhibit except `Exhibit_#004` is under the MIT License.
+  Copyright (c) 2026 Disquietude. See `LICENSE`.
+- `Exhibit_#004` (Microphase Oracle) is under the GNU General Public
+  License, version 3 or any later version. See `Exhibit_#004/LICENSE`.
+  That exhibit includes Polymer Self-Consistent Field (PSCF) source from
+  https://github.com/dmorse/pscfpp
+  Copyright 2015-2026, The Regents of the University of Minnesota.
+  A Windows build may be included at
+  Exhibit_#004/third_party/pscfpp/bin/pscf_rpc.exe. It is part of the
+  same GPL program. The PSCF source for it is that third_party/pscfpp tree.
+
+The MIT text in the root `LICENSE` does not apply to `Exhibit_#004`.
+The GPL does not apply to the other exhibits. An older commit of this
+repository that does not contain PSCF remains available under MIT for
+the files in that commit.
+
