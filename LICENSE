@@ -1,3 +1,18 @@
+Exhibit_#004 is not covered by the MIT license below.
+That directory is licensed under the GNU General Public License,
+version 3 or any later version. See Exhibit_#004/LICENSE.
+
+Exhibit_#004 includes source from Polymer Self-Consistent Field (PSCF),
+https://github.com/dmorse/pscfpp
+Copyright 2015-2026, The Regents of the University of Minnesota.
+PSCF is distributed under GPL version 3 or any later version, without warranty.
+Commit recorded in Exhibit_#004/third_party/pscfpp/PROVENANCE.txt.
+That directory may also contain a Windows build,
+Exhibit_#004/third_party/pscfpp/bin/pscf_rpc.exe. The program is part of
+this GPL work. Its PSCF source is the surrounding third_party/pscfpp tree.
+
+All other files in this repository are under the MIT License:
+
 MIT License
 
 Copyright (c) 2026 Disquietude
