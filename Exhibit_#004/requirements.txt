@@ -1,3 +1,0 @@
-numpy>=1.24
-# Optional (only needed to build cpp_core):
-# pybind11>=2.10
