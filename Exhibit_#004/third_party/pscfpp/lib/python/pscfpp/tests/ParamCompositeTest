@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+
+from pscfpp.param import *
+
+p = Composite('in/param')
+
+print(p)
+
+print('p.Mixture.Polymer[0].blocks = ')
+print(p.Mixture.Polymer[0].blocks)
+
+print('p.Mixture.Polymer[2] =')
+print(p.Mixture.Polymer[2])
+
+print('p.Interaction.chi[0][1] = ')
+print(p.Interaction.chi[0][1])
+
+print('p.Interaction.chi[1][0] = ')
+print(p.Interaction.chi[1][0])
+
+p.Interaction.chi[0][1] = 17.0;
+print('p.Interaction.chi[0][1] = ')
+print(p.Interaction.chi[0][1])

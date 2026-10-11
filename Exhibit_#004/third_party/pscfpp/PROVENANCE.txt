@@ -1,0 +1,45 @@
+Upstream: https://github.com/dmorse/pscfpp
+Commit: dfaddb98d6436fadee2ca16b84d82880f1759710
+Copyright: 2015-2026, The Regents of the University of Minnesota
+License: GNU GPL version 3 or any later version (see LICENSE in this directory)
+Included: CPU periodic SCFT (pscf_rpc) and the files required to build and
+run it, plus the diblock lamellar, hexagonal, gyroid, and BCC examples.
+src/rp is included because src/rpc/scft/ScftThermo.cpp includes
+rp/scft/ScftThermo.tpp. src/rpc/fts stays because the upstream makefile
+compiles it into the same library. The design scripts do not launch FTS.
+Omitted on purpose: GPU code (rpg), 1D finite-difference program (r1d),
+complex-field directories (cp, cpc, cpg), the src/test submodule, and
+examples this exhibit does not run.
+Modifications: src/prdc/crystal/groupFile.cpp (7 October 2026,
+Disquietude) looks for data/groups beside a Windows executable, or in
+../data/groups when that executable is in bin/. Other PSCF sources are
+unchanged.
+Packaging: some space-group and test filenames contain a colon, which
+Windows cannot store. Those unmodified files are in
+ntfs-incompatible-paths.zip under their original paths. Extract that zip
+on Linux or WSL before using a space group whose name contains ':'.
+The lamellar, hexagonal, gyroid, and BCC examples use group names
+P_-1, p_6_m_m, I_a_-3_d, and I_m_-3_m, which do not contain a colon.
+Submodule src/util: https://github.com/dmorse/util at commit
+40449dbddbefc97e4eafb2c318b16441d35b083f
+That repository has no separate LICENSE file. It is distributed here as
+part of PSCF under the GPL.
+Build for development (Linux, macOS, or WSL), with GSL and FFTW:
+./configure && make pscf_rpc
+Point PSCF_DATA_DIR at this directory's data/ when configuring, if the
+script does not do that itself. Run that binary with PSCF_RPC set to its path.
+WSL is a way to compile. It is not required to run the Windows program below.
+
+Windows program shipped with this exhibit:
+third_party/pscfpp/bin/pscf_rpc.exe
+The scripts on Windows run that file and do not look for Ubuntu unless
+PSCF_RPC is set to a Linux path. The executable is a static MinGW build
+of this source plus:
+  GNU Scientific Library 2.8, https://ftp.gnu.org/gnu/gsl/gsl-2.8.tar.gz
+    GPL version 3 or later, https://www.gnu.org/software/gsl/
+  FFTW 3.3.10, https://www.fftw.org/fftw-3.3.10.tar.gz
+    GPL version 2 or later, https://www.fftw.org/
+Both libraries were configured with --host=x86_64-w64-mingw32
+--enable-static --disable-shared and linked with -static. Their
+corresponding source is those upstream releases. The PSCF corresponding
+source is this directory, including the groupFile.cpp change above.

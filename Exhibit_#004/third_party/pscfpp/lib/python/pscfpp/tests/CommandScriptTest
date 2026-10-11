@@ -1,0 +1,8 @@
+#!/usr/bin/env python3
+
+from pscfpp.command import *
+
+p = Script('in/command')
+
+print(p)
+

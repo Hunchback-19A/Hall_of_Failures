@@ -1,0 +1,74 @@
+#=========================================================================
+# file: $(BLD_DIR)/config.mk
+#
+# This makefile fragment is the main configuration file for the pscf
+# build system.  A copy of this file is included by all other makefiles. 
+# This file is installed by the "configure" script, and may be edited 
+# by the user if needed. Copies of this file are installed in the src/
+# directory and in the bld directory. The copy in the src directory
+# controls in-source compilation, in which intermediate files are created
+# in the src directory tree, and the copy in the bld directory controls
+# out-of-source compilation in which these files are created in the bld
+# directory.
+#
+# This file contains definitions of several types of makefile variables:
+# 
+#  - Variables ROOT_DIR, SRC_DIR, BLD_DIR, BIN_DIR and DAT_DIR define
+#    absolute paths for the pscf root directory and some of its 
+#    subdirectories
+#
+#  - A variable UTIL_DEBUG that, if defined, enables conditional
+#    compilation of additional run-time validity checks
+#
+#  - A variable PSCF_CUDA that, if defined, enables compilation of 
+#    CUDA C++ source files
+#
+#  - Several variables that specify the names of the C++ and C++/CUDA 
+#    compilers, and command line options passed to both compilers.
+# 
+#  - Variable MAKEDEP and MAKEDEP_CUDA that give names for scripts used
+#    to automatically generate dependency (*.d) files.
+#
+#=========================================================================
+# Variables that define absolute directory paths
+#
+# In the config.mk file installed in each build directory (src or bld), 
+# values of these variables are set by the configure script, and should
+# usually not need to be modified by users. If the pscf root directory
+# is moved, rerun the configure script to reset these variables.
+
+# Absolute path to the pscfpp/ root directory
+ROOT_DIR=PWD
+
+# Path to the build directory (location for intermediate generated files)
+# This should be the directory that contains this config.mk file
+BLD_DIR=$(ROOT_DIR)/=OWD
+
+# Path to the source directory (contains C++ source code files)
+SRC_DIR=$(ROOT_DIR)/src
+
+# Installation directory for executable files
+BIN_DIR=$(ROOT_DIR)/bin
+
+# Directory for shared permanent (read-only) data used by programs.
+DAT_DIR=$(ROOT_DIR)/data
+
+#======================================================================
+# Conditional compilation of debugging.
+
+# Defining UTIL_DEBUG enables extra run-time validity tests.
+#UTIL_DEBUG=1
+
+# Note: The setopts script may be used to uncomment or comment out this
+# definition, by entering "./setopts -d1" to enable debugging (uncomment) 
+# or "./setopts -d0" to disable (comment out).
+#======================================================================
+# Conditional compilation of CUDA code
+ 
+# Defining PSCF_CUDA enables compilation of CUDA code.
+#PSCF_CUDA=1
+ 
+# Note: The setopts script may be used to uncomment or comment out this
+# definition, by entering "./setopts -c1" to enable CUDA (uncomment) or 
+# "./setopts -c0" to disable (comment out).
+#======================================================================

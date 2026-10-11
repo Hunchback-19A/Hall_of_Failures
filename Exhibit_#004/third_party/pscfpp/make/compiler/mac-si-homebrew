@@ -1,0 +1,142 @@
+# >>>>>>>> Begin inclusion of file make/compiler/mac-si-homebrew
+#
+# Compiler configuration file section:
+#
+# The block of variable definitions that follows this explanation is 
+# initialized by the configure script by copying the contents of a 
+# compiler configuration file found in the make/compiler director into
+# the main config.mk files in the src/ and bld/ directories. The file
+# "make/compiler/default" is used by default.  Users may add files 
+# to the make/compiler directory to store customized settings. If 
+# the configure script is invoked with a filename argument (e.g., as
+# "./configure local"), the file in the make/compiler directory with
+# the specified name (e.g., make/compiler/local) is used as the compiler
+# configuration file and copied into the main config.mk files.
+#
+# Variables defined in this block define the names of commands used to
+# to invoke compilers and linkers, some of the standard command line 
+# options passed to the compiler, and search paths for header files and 
+# libraries files for required external libraries.  See the section of 
+# this file entitled "Makefile Patterns and Recipes" below for a 
+# discussion of how these variables are used.
+#
+# The definitions given below are designed for use on a Mac OS X running
+# on Mac silicon (e.g., the m1 or m2 ARM chip), using the homebrew package
+# manager to install the GSL and FFTW libraries. They assume that:
+#
+#   - The Gnu C++ compiler command g++ can be used by default 
+#
+#   - Header files and libraries for FFTW are in subdirectories of the
+#     /opt/homebrew directory
+#
+#   - The gsl-config command can be used by the configure script to
+#     find the correct header and library paths for the Gnu Scientific
+#     Library (GSL)
+#
+# Note: The default linux compiler configuration file can be used for
+# older Macs that use the homebrew package manager but have Intel CPUs,
+# because of  a difference in how homebrew is configured machines that 
+# use Intel and Apple CPUs: Homebrew installs in /usr/local for Intel 
+# CPUs and in /opt/homebrew for Apple silicon.
+#-----------------------------------------------------------------------
+# C++ compiler and options (*.cpp files)
+
+# C++ Compiler Command name 
+# On OS X, the g++ command calls the Apple installed clang compiler
+CXX=g++
+
+# Flags for C/C++ preprocessor, including standard header search paths
+CPPFLAGS= -I $(SRC_DIR) -I /opt/homebrew/include -D UTIL_CXX11
+
+# Compiler option to specify ANSI C++ 2011 standard (required)
+CXX_STD = --std=c++11
+
+# C++ compiler options used when debugging is enabled (slower)
+CXXFLAGS_DEBUG= -Wall $(CXX_STD) 
+
+# C++ compiler options used when debugging is disabled (fast)
+#CXXFLAGS_FAST= -Wall $(CXX_STD) -O3 -ffast-math 
+CXXFLAGS_FAST= -Wall $(CXX_STD) -O3 
+
+# NOTE: Two options are provided above for compiling "fast", which differ
+# by the inclusion of the -ffast-math flag. This flag permits the compiler
+# to take several shortcuts that accelerate floating-point arithmetic, at
+# the expense of some numerical precision. Most notably, -ffast-math
+# assumes that floating-point numbers will never have a value of NaN or
+# Inf, and the program will therefore have undefined behavior if such a 
+# number does appear. 
+#
+# In our experience, -ffast-math reduces the runtime of a pscfpp
+# calculation by 1-4%, and the lower numerical accuracy does not
+# meaningfully affect the results. The only notable side-effect from using
+# -ffast-math occurs when a calculation diverges (i.e., when the solver
+# becomes unstable and the error blows up to infinity). In such cases, the
+# program may encounter an error value of NaN or Inf, but will not properly
+# handle that value. We have found that this often leads the program to
+# mistakenly assert that the calculation converged, when in reality it
+# diverged. 
+#
+# Users who wish to use -ffast-math can comment/uncomment the above lines
+# accordingly, so that CXXFLAGS_FAST is defined to include -ffast-math.
+
+# Compiler flags used for unit test program files
+TESTFLAGS= -Wall $(CXX_STD)
+
+# Compiler command used to generate dependencies
+MAKEDEP_CMD="-C$(CXX) -MM -MF"
+
+#-----------------------------------------------------------------------
+# CUDA compiler and options (*.cu files)
+
+# Note: These options are not usable on MAC OS X, because no Mac computer
+# uses an cuda-capable NVIDIA GPU.
+
+# CUDA compiler command
+NVXX=nvcc
+
+# NVCC architecture identifier, argument of -arch compiler option.
+# Use sm_xx, where xx denotes a numerical code for a CUDA compute 
+# capability, without the dot between major and minor version. For
+# example, use sm_80 for compute capability 8.0 (e.g., for an A100
+# NVIDIA GPU).
+NVARCH=sm_80
+
+# Options passed to CUDA compiler
+NVXXFLAGS= $(CXX_STD) -O3 -arch=$(NVARCH)
+
+#-----------------------------------------------------------------------
+# Archiver
+
+# Archiver command (archive object files to create static libraries)
+AR=ar
+
+# Command line arguments passed to archiver
+ARFLAGS=rcs
+
+#-----------------------------------------------------------------------
+# Linker / Loader 
+
+# Options passed to compiler for linking 
+LDFLAGS=-L/opt/homebrew/lib
+
+#-----------------------------------------------------------------------
+# Paths to header and library files for required external libraries
+
+# The following variables are used to construct the INCLUDES and LIBS 
+# variables that are defined in the patterns.mk file in each namespace-level
+# subdirectory of src.
+
+# Gnu Scientific Library
+# Note: Paths may be automatically generated using gsl-config
+GSL_INC=GSL_INC_AUTO
+GSL_LIB=GSL_LIB_AUTO
+
+# FFTW Fast Fourier transform library 
+FFTW_INC=
+FFTW_LIB=-lfftw3
+
+# CUDA FFT library (not usable on any Mac)
+CUFFT_INC=
+CUFFT_LIB=
+
+# <<<<<<<< End inclusion of file make/compiler/mac-si-homebrew

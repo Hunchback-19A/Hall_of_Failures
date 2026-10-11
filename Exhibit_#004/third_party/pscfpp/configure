@@ -1,0 +1,200 @@
+#!/bin/bash
+
+#========================================================================
+# Configure script:
+#
+# This script must be run once before the first time the PSCF package 
+# is compiled in order to install files that are used by the build system. 
+# It should be run from the pscf root directory in which this script is 
+# located (named pscfpp/ by default). The script detects the path to pscf 
+# root directory and sets some variables to values that contain this path, 
+# and so must be rerun if the entire package directory tree is moved or 
+# renamed. 
+#
+# This script:
+#
+# - Installs the config.mk compiler configuration file in the pscf src/
+#   directory (for in-source builds) and another file of the same name 
+#   in the bld/ directory (for out-of-source builds), with appropriate 
+#   values set in both of these files for ROOT_DIR, BLD_DIR, SRC_DIR and 
+#   other makefile variables that specify directory paths.
+#
+# - Copies several "makefile" files from the src/ directory into the bld/ 
+#   directory
+#
+# - Copies the "setopts" script from src/ into bld/
+#
+# - Installs makeDep dependency generation scripts in bin/
+#
+# Clean-up:
+#
+# All files installed by this script, along with almost all other files
+# that are not in the package repository, can be removed by invoking 
+# "make veryclean" from the pscf root directory (e.g., from pscfpp/).
+#
+#========================================================================
+# If necessary, change directory (cd) to the pscf root directory that 
+# contains this configure script.
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null && pwd )"
+if [ "$SCRIPT_DIR" != "$PWD" ]; then
+   echo "Resetting working directory to pscf root directory: $SCRIPT_DIR"
+   unset CDPATH
+   \cd $SCRIPT_DIR
+fi
+
+#========================================================================
+# Set and export PSCFPP_DIR (path to pscf root directory) shell variable
+
+PSCFPP_DIR=$PWD
+export PSCFPP_DIR
+
+#=======================================================================
+# Choose a compiler settings file from make/compiler directory 
+#
+# If a command line argument is passed to the configure script, this
+# argument is taken to be the name of a compiler setting file in the
+# make/compiler directory. 
+#
+# If the script is not passed a command line argument, the script will
+# try to identify the operating system and choose an appropriate
+# setting file if possible. The "linux-default" file is used if the 
+# operating system is a linux variant or if no better option can be
+# identified. 
+# 
+
+# Set a default value for the name of the compiler settings file
+VARFILE='linux-default'
+
+if [ "$#" -gt 0 ]; then
+  # If the configure script is passed one or more command line arguments, 
+  # use the first argument as the name of the compiler setting file
+  VARFILE=$1
+else
+  # If the script is not passed any command line arguments, use the 
+  # 'uname -s' command to find the name of the operating system
+  case "$(uname -s)" in
+    Linux*)
+      echo "Linux operating system detected"
+      echo "Using default compiler settings file make/compiler/linux-default"
+      ;;
+    Darwin*)
+      echo "Mac OS X (Darwin) operating system detected"
+      if [ -d "/opt/homebrew/bin" ]; then
+        if [ -f "/opt/homebrew/bin/brew" ]; then
+          echo "Homebrew installation for Apple silicon detected"
+          VARFILE="mac-si-homebrew"
+        fi
+      fi
+      ;;
+    FreeBSD*)
+      echo "FreeBSD operating system detected"
+      ;;
+    CYGWIN*)
+      echo "CYGWIN operating system for Windows hardware detected"
+      ;;
+    MINGW*)
+      echo "CYGWIN operating system for Windows hardware detected"
+      ;;
+    *)
+      echo "Unknown operating system"
+      ;;
+    esac
+fi
+VARFILE="make/compiler/$VARFILE"
+echo "Using compiler settings file $VARFILE"
+
+#=======================================================================
+# Find paths to GSL library, write modified compiler file to make/temp
+
+# This code uses the gsl-config executable installed by the Gnu Scientific
+# Library (GSL) package, which can returns paths to directories in which
+# GSL header and library files have been installed.
+
+HAS_GSL="$(which gsl-config)"
+if [ -n "$HAS_GSL" ]; then
+  echo "Found gsl-config command for Gnu Scientific Library (GSL)"
+  GSL_INC="-isystem $(gsl-config --prefix)/include"
+  GSL_LIB=$(gsl-config --libs)
+  sed -e "s|=GSL_INC_AUTO|=$GSL_INC|" -e "s|=GSL_LIB_AUTO|=$GSL_LIB|" "$VARFILE" > make/buf
+  sed -e "s|-isystem|-I|" make/buf > make/temp
+  rm make/buf
+  echo "Paths to GSL header and library files have been set in main config.mk files"
+else
+  echo "Did not find gsl-config command for Gnu Scientific Library."
+  echo "Check paths GSL_INC and GSL_LIB in (src|bld)/config.mk files."
+fi
+
+#=======================================================================
+# Install config.mk files in src/ directory tree for in-source builds
+
+# Set directory paths in main_config.1, write edited file to src/temp
+# Note: Stream editor (sed) is used here to:
+#  - Set $(ROOT_DIR) to absolute path of pscf root directory ($PWD)
+#  - Set $(BLD_DIR) to absolute path to src directory (in-source-builds)
+sed -e "s|=PWD|=$PWD|" -e "s|=OWD|src|" make/config/main_config.1 > src/temp
+
+# Concatenate src/temp + make/temp + main_config.2
+# Note: Set paths for the GSL library by including file make/temp
+cat src/temp make/temp make/config/main_config.2 > src/config.mk
+
+# Remove temporary file src/temp
+rm src/temp 
+
+# Install namespace level config.mk in src/ directory (for in-source builds)
+cp make/config/util_config src/util/config.mk
+
+# Set directory paths in paths.h, write modified file to src/pscf
+sed -e "s|PWD|$PWD|" make/config/paths.h > src/pscf/paths.h
+
+#========================================================================
+# Install files in the bld/ directory for out-of-source builds.
+
+# Construct and install main config.mk file in bld directory
+
+# Set directory paths in main_config.1, write edited file to bld/temp
+# Set $(ROOT_DIR) to absolute path of pscf root directory (i.e., $PWD)
+# Set $(BLD_DIR) to absolute path to bld directory (out-of-source builds)
+sed -e "s|=PWD|=$PWD|" -e "s|=OWD|bld|" make/config/main_config.1 > bld/temp
+
+# Concatenate bld/temp + make/temp + main_config.2
+# Note: Set paths for the GSL library by including file make/temp
+cat bld/temp make/temp make/config/main_config.2 > bld/config.mk
+
+# Remove temporary files bld/temp and make/temp
+rm bld/temp 
+rm make/temp
+
+# The following operations all copy files from src/ to bld/
+
+# Copy namespace level util/config.mk file
+cp src/util/config.mk bld/util/config.mk
+
+# Copy main and namespace level makefiles
+cp src/makefile bld/makefile
+cp src/util/makefile bld/util/makefile
+cp src/pscf/makefile bld/pscf/makefile
+cp src/prdc/makefile bld/prdc/makefile
+cp src/r1d/makefile bld/r1d/makefile
+cp src/rpc/makefile bld/rpc/makefile
+cp src/rpg/makefile bld/rpg/makefile
+cp src/cpc/makefile bld/cpc/makefile
+
+# Copy makefiles in namespace level test directories
+cp src/util/tests/makefile bld/util/tests/makefile
+cp src/pscf/tests/makefile bld/pscf/tests/makefile
+cp src/prdc/tests/makefile bld/prdc/tests/makefile
+cp src/r1d/tests/makefile bld/r1d/tests/makefile
+cp src/rpc/tests/makefile bld/rpc/tests/makefile
+cp src/rpg/tests/makefile bld/rpg/tests/makefile
+cp src/cpc/tests/makefile bld/cpc/tests/makefile
+
+# Copy setopts script
+cp src/setopts bld/setopts
+
+#========================================================================
+# Install copies of the dependency-maker bash scripts in bin/
+
+(cp lib/bash/makeDepCpp bin/makeDepCpp)
+(cp lib/bash/makeDepCuda bin/makeDepCuda)
+

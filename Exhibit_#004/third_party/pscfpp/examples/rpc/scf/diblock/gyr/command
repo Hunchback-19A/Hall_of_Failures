@@ -1,0 +1,12 @@
+READ_W_BASIS  in/w.bf
+WRITE_WAVES   out/waves
+WRITE_STARS   out/stars
+WRITE_GROUP   out/group
+ITERATE
+WRITE_PARAM   out/prm
+WRITE_THERMO  out/dat
+WRITE_W_BASIS out/w.bf
+WRITE_W_RGRID out/w.rf
+WRITE_C_RGRID out/c.rf
+WRITE_TIMERS  out/times
+FINISH
