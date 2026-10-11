@@ -1,0 +1,109 @@
+#ifndef RP_BASIS_FIELD_STATE_H
+#define RP_BASIS_FIELD_STATE_H
+
+/*
+* PSCF - Polymer Self-Consistent Field
+*
+* Copyright 2015 - 2025, The Regents of the University of Minnesota
+* Distributed under the terms of the GNU General Public License.
+*/
+
+#include <prdc/field/FieldState.h>
+#include <string>
+
+namespace Pscf {
+namespace Rp {
+
+   using namespace Util;
+   using namespace Prdc;
+
+   /**
+   * FieldState for fields in symmetry-adapted basis format.
+   *
+   * Instantiations of this class template are used as base classes for 
+   * two closely analogous class templates, also named BasisFieldState,
+   * that are defined in Rpc and Rpg namespaces and used in the pscf_rpc
+   * and pscf_rpg programs, respectively.
+   *
+   * Template parameters:
+   *
+   *   - D : dimension of space (1, 2, or 3)
+   *   - T : Types class (Rpc::Types<D> or Rpg::Types<D>)
+   *
+   * \ingroup Rp_Scft_Sweep_Module
+   */
+   template <int D, class T>
+   class BasisFieldState
+    : public FieldState<D, DArray<double>, typename T::System>
+   {
+   public:
+
+      /**
+      * Allocate all fields.
+      *
+      * Precondition: hasSystem() == true
+      */
+      void allocate();
+
+      /**
+      * Read state from file.
+      *
+      * \param filename  name of input w-field file, in basis format
+      */
+      void read(const std::string & filename);
+
+      /**
+      * Write state to file.
+      *
+      * \param filename  name of output w-field file, in basis format
+      */
+      void write(const std::string & filename);
+
+      /**
+      * Store the current state of the associated system.
+      *
+      * Copy the fields and the unit cell.
+      */
+      void getSystemState();
+
+      /**
+      * Set the state of the associated system to this state.
+      *
+      * \param newCellParams  update unit cell parameters iff true
+      */
+      void setSystemState(bool newCellParams);
+
+      using FieldStateT = FieldState<D, DArray<double>, typename T::System>;
+
+      // Inherited member functions
+      using FieldStateT::fields;
+      using FieldStateT::field;
+      using FieldStateT::unitCell;
+      using FieldStateT::system;
+
+   protected:
+
+      /**
+      * Default constructor.
+      */
+      BasisFieldState();
+
+      /**
+      * Constructor, create association with a parent system.
+      *
+      * \param system associated parent system
+      */
+      BasisFieldState(typename T::System& system);
+
+      ~BasisFieldState() = default;
+
+   private:
+
+      using FieldIoT = typename T::FieldIo;
+
+   };
+
+} // namespace Rp
+} // namespace Pscf
+
+#endif

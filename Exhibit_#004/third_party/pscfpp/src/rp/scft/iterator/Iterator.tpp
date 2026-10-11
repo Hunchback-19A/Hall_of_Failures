@@ -1,0 +1,109 @@
+#ifndef RP_ITERATOR_TPP
+#define RP_ITERATOR_TPP
+
+/*
+* PSCF - Polymer Self-Consistent Field
+*
+* Copyright 2015 - 2025, The Regents of the University of Minnesota
+* Distributed under the terms of the GNU General Public License.
+*/
+
+#include "Iterator.h"
+
+namespace Pscf {
+namespace Rp {
+
+   using namespace Util;
+
+   // Public functions
+
+   /*
+   * Default constructor.
+   */
+   template <int D, class ST>
+   Iterator<D,ST>::Iterator()
+    : isSymmetric_(false),
+      isFlexible_(false),
+      sysPtr_(nullptr)
+   {  setClassName("Iterator"); }
+
+   /*
+   * Constructor.
+   */
+   template <int D, class ST>
+   Iterator<D,ST>::Iterator(ST& system)
+    : isSymmetric_(false),
+      isFlexible_(false),
+      sysPtr_(&system)
+   {  setClassName("Iterator"); }
+
+   /*
+   * Destructor.
+   */
+   template <int D, class ST>
+   Iterator<D,ST>::~Iterator()
+   {}
+
+   /*
+   * Get the number of flexible lattice parameters.
+   */
+   template <int D, class ST>
+   int Iterator<D,ST>::nFlexibleParams() const
+   {
+      UTIL_CHECK(sysPtr_);
+      UTIL_CHECK(flexibleParams_.size() == 
+                                 system().domain().unitCell().nParameter());
+      int nFlexParams = 0;
+      for (int i = 0; i < flexibleParams_.size(); i++) {
+         if (flexibleParams_[i]) nFlexParams++;
+      }
+      return nFlexParams;
+   }
+
+   /*
+   * Set the array indicating which lattice parameters are flexible.
+   */
+   template <int D, class ST>
+   void Iterator<D,ST>::setFlexibleParams(FSArray<bool,6> const & flexParams)
+   {  
+      UTIL_CHECK(sysPtr_);
+      flexibleParams_ = flexParams; 
+      if (nFlexibleParams() == 0) {
+         isFlexible_ = false;
+      } else {
+         isFlexible_ = true;
+      }
+   }
+
+   /*
+   * Return the stress used by this Iterator, for one lattice parameter.
+   */
+   template <int D, class ST>
+   double Iterator<D,ST>::stress(int paramId) const
+   {
+      // Parameter must be flexible to access the stress
+      UTIL_CHECK(sysPtr_);
+      UTIL_CHECK(flexibleParams_[paramId]);
+
+      if (system().hasEnvironment()) {
+         return system().environment().stress(paramId);
+      } else {
+         return system().mixture().stress(paramId);
+      }
+   }
+
+   // Protected function
+
+   /*
+   * Set system.
+   */
+   template <int D, class ST>
+   void Iterator<D,ST>::setSystem(ST& system)
+   {
+      UTIL_CHECK(!sysPtr_);  
+      sysPtr_ = &system; 
+   }
+
+} // namespace Rp
+} // namespace Pscf
+#endif
