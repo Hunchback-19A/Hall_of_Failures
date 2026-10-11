@@ -1,0 +1,8 @@
+pscf_correlation_= \
+  pscf/correlation/Debye.cpp \
+  pscf/correlation/Polymer.cpp \
+  pscf/correlation/Mixture.cpp 
+
+pscf_correlation_OBJS=\
+     $(addprefix $(BLD_DIR)/, $(pscf_correlation_:.cpp=.o))
+
