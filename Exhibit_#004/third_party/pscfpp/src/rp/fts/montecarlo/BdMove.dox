@@ -1,0 +1,83 @@
+namespace Pscf {
+namespace Rp {
+
+/*! 
+\page rp_BdMove_page BdMove
+
+The BdMove classes used by both the pscf_rpc and pscf_rpg programs 
+implements a MC move that performs a short BD simulation, and always
+accepts the result. Unlike other MC moves, this move does not exactly
+satisfy detailed balance, and incurs the same sorts of systematic 
+errors as those found in BD simulations. 
+
+The BdMove class is provided to allow users to mix BD and MC 
+sampling strategies. For large systems, BD simulation is generally 
+more efficient than MC simulation, at the cost of the existence of 
+a systematic error that decreases with decreasing time step. By
+combining a BdMove with a one or more more specialized MC move, a 
+user may combine the efficiency of BD simulation with specialized
+capabilities provided by another type of MC move. 
+
+Two closely analogous class templates named Pscf::Rp::BdMove and 
+Pscf::Rpg::BdMove are used to perform this type of move in the
+pscf_rpc and pscf_rpg programs, respectively. Specializations of 
+these templates are derived from specializations of the base class 
+template Pscf::Rp::BdMove, which defines the implementation of the
+move in a generic form.
+
+\see Rp::BdMove (class API)
+
+\section rp_BdMove_algorithm_sec Step Algorithm
+
+Each step of the BdMove algorithm runs a short BD simulation, using
+the Leimkuler-Matthews BD step algorithm that is also used by the
+\ref rp_LMBdStep_page BD step algorithm.
+
+\section rp_BdMove_parameter_sec Parameter file
+
+The only parameters needed by this algorithm are the "probability" 
+parameter, which determines the probability that a move of this type
+will be attempted, a "mobility" parameter, which is the mobility 
+parameter of the BD step algorithm, and parameter "nStep", which
+specifieds the number of BD steps that should be taken per MC move
+of this type.  All three parameters are required. A typical example 
+of an associated parameter file block is shown below.
+\code
+  BdMove{
+    probability   0.5
+    mobility      0.005
+    nStep         100
+  }
+\endcode
+The format for this block is thus:
+\code
+  BdMove{
+    probability  float (in range [0,1])
+    mobility     float
+    nStep        int
+  }
+\endcode
+The meanings of all parameters are also summarized briefly below:
+<table>
+  <tr>
+    <td> <b> Label </b>  </td>
+    <td> <b> Description </b>  </td>
+  </tr>
+  <tr>
+    <td> probability </td>
+    <td> probability of attempting a step of this type  </td>
+  </tr>
+  <tr>
+    <td> mobility </td>
+    <td> Mobility parameter of the underlying BD step algorith </td>
+  </tr>
+  <tr>
+    <td> nStep </td>
+    <td> number of BD steps per MC move of this type </td>
+  </tr>
+</table>
+
+*/
+
+}
+}

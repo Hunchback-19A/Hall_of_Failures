@@ -1,0 +1,76 @@
+namespace Pscf {
+namespace Rpc {
+
+/*! 
+\page rp_RealMove_page RealMove
+
+The RealMove classes used by both the pscf_rpc and pscf_rpg programs 
+implements a simple MC move for which the attempted move is a random
+change at every grid point.
+
+Two closely analogous classes named Pscf::Rpc::RealMove and 
+Pscf::Rpg::RealMove that are defined in different namespaces are used 
+to implement this the same step algorithm for different programs. 
+The RealMove class defined in the Rpc namespace is used in the pscf_rpc 
+program (using CPU hardware) and the class defined in the Rpg namespace 
+is used in the pscf_rpg program (using GPU acceleration). These two 
+classes implement the same step algorithm and use the same parameter 
+file format, which are documented below.
+
+\section rp_RealMove_algorithm_sec Step Algorithm
+
+A general discussion of MC move algorithms for PS-FTS is given on a 
+\ref psfts_algo_montecarlo_page "separate page". As discussed there, 
+each attempted MC move consists of an unconstrained change in the 
+fields, followed by application of a compressor to re-impose the 
+incompressibility constraint. The decision about whether to accept 
+or reject the move is based on the value of the Hamiltonian after 
+incompressibility has been restored by adjusting the pressure-like
+field.
+
+The RealMove algorithm takes one parameter, denoted by sigma. The
+unconstrained move each monomer field component at each grid point
+by a random amount chosen from the Gaussian distribution with zero 
+mean and a standard deviation of a sigma. 
+
+\section rp_RealMove_parameter_sec Parameter file
+
+The only parameter needed by this algorithm are the "probability" 
+parameter, which determines the probability that a move of this type 
+will be chosen on any step, and a required parameter named sigma, as 
+described above.  A typical example of the contents of this is 
+shown below.
+\code
+  RealMove{
+    probability  0.05
+    sigma     0.005
+  }
+\endcode
+The parameter file format is thus:
+\code
+RealMove{
+  probability  float (in range [0,1])
+  sigma        float
+}
+\endcode
+Meanings of both parameters are described briefly below:
+<table>
+  <tr>
+    <td> <b> Label </b>  </td>
+    <td> <b> Description </b>  </td>
+  </tr>
+  <tr>
+    <td> probability </td>
+    <td> probability of attempting a step of this type  </td>
+  </tr>
+  <tr>
+    <td> sigma </td>
+    <td> the standard deviation of the Gaussian distribution from which 
+         the step size is chosen </td>
+  </tr>
+</table>
+
+*/
+
+}
+}

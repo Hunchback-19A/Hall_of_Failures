@@ -1,0 +1,59 @@
+namespace Pscf {
+namespace Rp {
+
+/*! 
+\page rp_ShiftMove_page ShiftMove
+
+The ShiftMove performs a Monte Carlo move that rigidly translates the
+current fields by a random displacement. It is designed to be used 
+to speed up sampling in Einstein crystal thermodynamic integration 
+simulations under conditions in which the fraction of the Einstein
+crystal Hamiltonian used to define the overall Hamiltonian is very
+small. 
+
+\see Rp::ShiftMove (class API)
+
+\section rp_ShiftMove_algorithm_sec Step Algorithm
+
+The shift move translates the field by displacement that corresponds
+to a shift by an integer number of grid points in each direction. 
+The parameter maxShift is an integer that gives the maximum allowed 
+displacement in each direction. Displacements in each direction are 
+chosen uniformly from the range between -maxShift and +maxShift.
+
+\section rp_ShiftMove_parameter_sec Parameter file
+
+An example of the associated parameter file block is shown below.
+\code
+  ShiftMove{
+    probability   0.5
+    maxShift        2
+  }
+\endcode
+The format for this block is thus:
+\code
+  ShiftMove{
+    probability  float (in range [0,1])
+    maxShift      int 
+  }
+\endcode
+The meanings of the two required parameter are summarized briefly below:
+<table>
+  <tr>
+    <td> <b> Label </b>  </td>
+    <td> <b> Description </b>  </td>
+  </tr>
+  <tr>
+    <td> probability </td>
+    <td> probability of attempting a move of this type  </td>
+  </tr>
+  <tr>
+    <td> maxShift </td>
+    <td> maximum absolute value of the shift in any direction. </td>
+  </tr>
+</table>
+
+*/
+
+}
+}
