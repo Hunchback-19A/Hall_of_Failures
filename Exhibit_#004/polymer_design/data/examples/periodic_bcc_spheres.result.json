@@ -1,0 +1,138 @@
+{
+  "schema": "polymer_design.result.v1",
+  "request_schema": "polymer_design.request.v1",
+  "client": "human",
+  "request_id": "periodic-bcc-spheres",
+  "metadata": {
+    "note": "Vendored BCC example composition: f = 0.25, chiN = 20, on the BCC cell."
+  },
+  "solver": "pscf_rpc",
+  "software_version": "0.1.0",
+  "pscf_commit": "dfaddb98d6436fadee2ca16b84d82880f1759710",
+  "pscf_upstream": "https://github.com/dmorse/pscfpp",
+  "started_at": "2026-10-08T13:19:45+00:00",
+  "finished_at": "2026-10-08T13:19:48+00:00",
+  "status": "completed",
+  "assumptions": [
+    "Human and AI requests use the same validation and the same solver.",
+    "client is provenance only. It does not change the calculation.",
+    "No parameter was rewritten to force a result.",
+    "PSCF diblock examples use block lengths that sum to 1. The adapter writes \u03c7N into the chi entry and does not pass a separate N.",
+    "Monomer concentrations were written with WRITE_C_RGRID after ITERATE. That does not change the free energy. A missing grid is not filled in.",
+    "Only the requested example cells are compared. A lower fHelmholtz is preferred only among cells that converged.",
+    "Space-group names in the result are the vendored example identities, not a symmetry calculated for this composition."
+  ],
+  "candidates": [
+    {
+      "id": "bcc-025",
+      "name": "bcc-025",
+      "client": "human",
+      "input": {
+        "architecture": "diblock",
+        "volume_fractions": [
+          0.25,
+          0.75
+        ],
+        "chi": 0.1,
+        "degree_of_polymerization": 200.0,
+        "chiN": 20.0,
+        "cells": [
+          "bcc"
+        ]
+      },
+      "solver": "pscf_rpc",
+      "software_version": "0.1.0",
+      "pscf_commit": "dfaddb98d6436fadee2ca16b84d82880f1759710",
+      "status": "converged",
+      "success": true,
+      "preferred_morphology": "BCC spheres",
+      "free_energy": 2.61458891646,
+      "free_energy_name": "fHelmholtz",
+      "morphologies": [
+        {
+          "representation": "pscf_example_cell_v1",
+          "cell": "bcc",
+          "morphology": "BCC spheres",
+          "dimension": 3,
+          "lattice": "cubic",
+          "space_group": "I_m_-3_m",
+          "converged": true,
+          "reported_free_energy": 2.61458891646,
+          "free_energy": 2.61458891646,
+          "free_energy_name": "fHelmholtz",
+          "relative_free_energy": 0.0,
+          "detail": "fHelmholtz from pscf_rpc."
+        }
+      ],
+      "warnings": [
+        "bcc: fHelmholtz from pscf_rpc."
+      ],
+      "diagnostics": {
+        "method": {
+          "upstream": "pscf_rpc",
+          "chi_written": 20.0,
+          "f_A": 0.25,
+          "free_energy_name": "fHelmholtz",
+          "source": "University of Minnesota PSCF (pscf_rpc), not the 1D prototype"
+        },
+        "convergence": {
+          "converged": true,
+          "cell": "bcc"
+        },
+        "structure": {
+          "cells": [
+            {
+              "cell": "bcc",
+              "morphology": "BCC spheres",
+              "dimension": 3,
+              "fHelmholtz": 2.61458891646,
+              "converged": true,
+              "detail": "fHelmholtz from pscf_rpc."
+            }
+          ]
+        },
+        "solver_assumptions": [
+          "PSCF diblock examples use block lengths that sum to 1. The adapter writes \u03c7N into the chi entry and does not pass a separate N.",
+          "Initial fields are the vendored PSCF example fields (lam, hex, gyr, bcc).",
+          "The reported morphology is the converged cell with the lowest fHelmholtz.",
+          "PSCF source is third_party/pscfpp, GPL-3.0-or-later, copyright 2015-2026 The Regents of the University of Minnesota.",
+          "The copied PSCF command writes the monomer concentration after ITERATE. That file is the field PSCF computed. It is not an atomistic structure."
+        ]
+      },
+      "interpretation": {
+        "calculated": "Among the tested morphologies that converged, BCC spheres has the lowest fHelmholtz.",
+        "prediction": "Within this PSCF model and among the tested morphologies, the calculation predicts BCC spheres. That is a model prediction, not a statement that the morphology will form.",
+        "experimental": "Bcc spheres is a candidate for experimental investigation if the composition, segregation strength, and processing are comparable to this calculation. The model does not account for kinetic trapping, molecular-weight distribution, solvent history, temperature history, or defects. The prediction requires experimental validation.",
+        "limitations": "This is a calculation inside the selected model. It does not include dispersity, processing, solvent history, defects, or a measured temperature. Experimental validation is required."
+      },
+      "visualization": {
+        "available": true,
+        "representation": "monomer_concentration",
+        "density_source": "pscf_calculated",
+        "formats": [
+          "cjson"
+        ],
+        "fields": [
+          {
+            "cell": "bcc",
+            "file": "periodic_bcc_spheres.result.json.fields/bcc-025-bcc.json"
+          }
+        ],
+        "reason": "Monomer concentrations from PSCF WRITE_C_RGRID. Passing them to visualize writes an Avogadro CJSON volume, not an atomistic file.",
+        "export_command": "python -m polymer_design visualize C:\\Users\\elain\\Desktop\\Block co-polymer design\\polymer_design\\data\\examples\\periodic_bcc_spheres.result.json --format avogadro"
+      },
+      "relative_to_batch_best": 0.0,
+      "batch_rank": 1
+    }
+  ],
+  "ranking": [
+    {
+      "rank": 1,
+      "id": "bcc-025",
+      "morphology": "BCC spheres",
+      "free_energy": 2.61458891646,
+      "free_energy_name": "fHelmholtz",
+      "relative_free_energy": 0.0
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+Polymer design calculation
+
+Request: periodic-bcc-check
+Client: human
+Solver: pscf_rpc
+Software version: 0.1.0
+Started: 2026-10-08T12:51:18+00:00
+Finished: 2026-10-08T12:51:36+00:00
+Status: completed_with_failures
+PSCF commit: dfaddb98d6436fadee2ca16b84d82880f1759710
+PSCF upstream: https://github.com/dmorse/pscfpp
+
+Assumptions
+- Human and AI requests use the same validation and the same solver.
+- client is provenance only. It does not change the calculation.
+- No parameter was rewritten to force a result.
+- PSCF diblock examples use block lengths that sum to 1. The adapter writes χN into the chi entry and does not pass a separate N.
+- Monomer concentrations were written with WRITE_C_RGRID after ITERATE. That does not change the free energy. A missing grid is not filled in.
+- Only the requested example cells are compared. A lower fHelmholtz is preferred only among cells that converged.
+- Space-group names in the result are the vendored example identities, not a symmetry calculated for this composition.
+
+Candidate bcc-056
+  Architecture: diblock
+  Volume fractions: 0.56, 0.44
+  chi: 0.06
+  N: 200
+  chiN: 12
+  Cells: bcc
+  Candidate status: unconverged
+  Morphologies:
+    - BCC spheres: not ranked, free energy n/a, relative n/a
+  Calculated result:
+    No converged free energy is available for this candidate.
+  Model prediction:
+    No preferred morphology is assigned. An unconverged or failed calculation is not treated as a thermodynamic result.
+  Experimental interpretation:
+    No experimental implication is drawn. A missing calculation is not evidence for or against a morphology.
+  Limitations:
+    This is a calculation inside the selected model. It does not include dispersity, processing, solvent history, defects, or a measured temperature. Experimental validation is required.
+  Warning: bcc: Log has no fHelmholtz line. Concentration file out/c.rf was not written.
+  Warning: Unconverged cells were not ranked: bcc
+
+Ranking (converged candidates only)
+  None. No converged free energy was available to rank.
+
+The ranking compares numbers from this request only.
+It does not claim that a morphology will form in experiment.
+
+Normal termination

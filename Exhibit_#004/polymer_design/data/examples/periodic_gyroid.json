@@ -1,0 +1,20 @@
+{
+  "schema": "polymer_design.request.v1",
+  "client": "human",
+  "request_id": "periodic-gyroid-check",
+  "solver": "pscf_rpc",
+  "cells": ["gyr"],
+  "timeout_s": 180,
+  "metadata": {
+    "note": "Same composition as the lamellar check: f = 0.56, chiN = 12, on the gyroid cell."
+  },
+  "candidates": [
+    {
+      "id": "gyr-056",
+      "architecture": "diblock",
+      "volume_fractions": [0.56, 0.44],
+      "chi": 0.06,
+      "degree_of_polymerization": 200
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "polymer_design.request.v1",
+  "client": "human",
+  "request_id": "periodic-bcc-spheres",
+  "solver": "pscf_rpc",
+  "cells": ["bcc"],
+  "timeout_s": 180,
+  "metadata": {
+    "note": "Vendored BCC example composition: f = 0.25, chiN = 20, on the BCC cell."
+  },
+  "candidates": [
+    {
+      "id": "bcc-025",
+      "architecture": "diblock",
+      "volume_fractions": [0.25, 0.75],
+      "chi": 0.1,
+      "chiN": 20,
+      "degree_of_polymerization": 200
+    }
+  ]
+}

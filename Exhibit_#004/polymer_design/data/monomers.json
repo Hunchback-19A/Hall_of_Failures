@@ -1,0 +1,44 @@
+{
+  "styrene": {
+    "aliases": ["S", "PS", "styrene"],
+    "full_name": "polystyrene",
+    "molar_volume_cm3_mol": 98.0,
+    "solubility_parameter_MPa05": 18.6,
+    "notes": "Common hydrophobic vinyl block (e.g. PS-b-PMMA, SBS)."
+  },
+  "MMA": {
+    "aliases": ["MMA", "PMMA", "methyl methacrylate"],
+    "full_name": "poly(methyl methacrylate)",
+    "molar_volume_cm3_mol": 85.0,
+    "solubility_parameter_MPa05": 19.0,
+    "notes": "Common acrylic block paired with styrene."
+  },
+  "isoprene": {
+    "aliases": ["I", "PI", "isoprene"],
+    "full_name": "polyisoprene",
+    "molar_volume_cm3_mol": 74.0,
+    "solubility_parameter_MPa05": 16.5,
+    "notes": "Soft diene block; classic SI and SIS materials."
+  },
+  "butadiene": {
+    "aliases": ["B", "PB", "butadiene"],
+    "full_name": "polybutadiene",
+    "molar_volume_cm3_mol": 60.0,
+    "solubility_parameter_MPa05": 17.0,
+    "notes": "Soft diene block; classic SB and SBS materials."
+  },
+  "EO": {
+    "aliases": ["EO", "PEO", "ethylene oxide"],
+    "full_name": "poly(ethylene oxide)",
+    "molar_volume_cm3_mol": 39.0,
+    "solubility_parameter_MPa05": 20.2,
+    "notes": "Polar/hydrophilic block used in amphiphilic diblocks."
+  },
+  "2VP": {
+    "aliases": ["2VP", "P2VP", "2-vinylpyridine"],
+    "full_name": "poly(2-vinylpyridine)",
+    "molar_volume_cm3_mol": 93.0,
+    "solubility_parameter_MPa05": 21.0,
+    "notes": "Basic nitrogen-containing vinyl block."
+  }
+}

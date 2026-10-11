@@ -1,0 +1,52 @@
+Polymer design calculation
+
+Request: periodic-bcc-spheres
+Client: human
+Solver: pscf_rpc
+Software version: 0.1.0
+Started: 2026-10-08T13:19:45+00:00
+Finished: 2026-10-08T13:19:48+00:00
+Status: completed
+PSCF commit: dfaddb98d6436fadee2ca16b84d82880f1759710
+PSCF upstream: https://github.com/dmorse/pscfpp
+
+Assumptions
+- Human and AI requests use the same validation and the same solver.
+- client is provenance only. It does not change the calculation.
+- No parameter was rewritten to force a result.
+- PSCF diblock examples use block lengths that sum to 1. The adapter writes χN into the chi entry and does not pass a separate N.
+- Monomer concentrations were written with WRITE_C_RGRID after ITERATE. That does not change the free energy. A missing grid is not filled in.
+- Only the requested example cells are compared. A lower fHelmholtz is preferred only among cells that converged.
+- Space-group names in the result are the vendored example identities, not a symmetry calculated for this composition.
+
+Candidate bcc-025
+  Architecture: diblock
+  Volume fractions: 0.25, 0.75
+  chi: 0.1
+  N: 200
+  chiN: 20
+  Cells: bcc
+  Candidate status: converged
+  Preferred morphology: BCC spheres
+  Free energy (fHelmholtz): 2.6145889
+  Batch rank: 1
+  Relative to batch best: 0
+  Morphologies:
+    - BCC spheres: converged, free energy 2.6145889, relative 0
+  Calculated result:
+    Among the tested morphologies that converged, BCC spheres has the lowest fHelmholtz.
+  Model prediction:
+    Within this PSCF model and among the tested morphologies, the calculation predicts BCC spheres. That is a model prediction, not a statement that the morphology will form.
+  Experimental interpretation:
+    Bcc spheres is a candidate for experimental investigation if the composition, segregation strength, and processing are comparable to this calculation. The model does not account for kinetic trapping, molecular-weight distribution, solvent history, temperature history, or defects. The prediction requires experimental validation.
+  Limitations:
+    This is a calculation inside the selected model. It does not include dispersity, processing, solvent history, defects, or a measured temperature. Experimental validation is required.
+  Warning: bcc: fHelmholtz from pscf_rpc.
+
+Ranking (converged candidates only)
+  1. bcc-025: BCC spheres, fHelmholtz 2.6145889, relative 0
+
+The ranking compares numbers from this request only.
+It does not claim that a morphology will form in experiment.
+
+Normal termination
