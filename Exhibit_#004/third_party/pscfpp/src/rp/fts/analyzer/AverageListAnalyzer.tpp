@@ -1,0 +1,255 @@
+#ifndef RP_AVERAGE_LIST_ANALYZER_TPP
+#define RP_AVERAGE_LIST_ANALYZER_TPP
+
+/*
+* PSCF - Polymer Self-Consistent Field
+*
+* Copyright 2015 - 2025, The Regents of the University of Minnesota
+* Distributed under the terms of the GNU General Public License.
+*/
+
+#include "AverageListAnalyzer.h"
+
+#include <util/format/Int.h>
+#include <util/format/Dbl.h>
+#include <util/misc/FileMaster.h>
+#include <util/misc/ioUtil.h>
+
+namespace Pscf {
+namespace Rp {
+
+   using namespace Util;
+
+   /*
+   * Constructor.
+   */
+   template <int D, class T>
+   AverageListAnalyzer<D,T>::AverageListAnalyzer(
+                                typename T::Simulator& simulator,
+                                typename T::System& system)
+    : AnalyzerT(simulator, system),
+      nSamplePerOutput_(1),
+      nValue_(0),
+      hasAccumulators_(false)
+   {  AnalyzerT::setFileMaster(system.fileMaster()); }
+
+   /*
+   * Read interval and outputFileName.
+   */
+   template <int D, class T>
+   void AverageListAnalyzer<D,T>::readParameters(std::istream& in)
+   {
+      AnalyzerT::readParameters(in);
+      nSamplePerOutput_ = 1;
+      ParamComposite::readOptional(in,"nSamplePerOutput",
+                                   nSamplePerOutput_);
+      UTIL_CHECK(nSamplePerOutput_ >= 0);
+      if (nSamplePerOutput() > 0) {
+         std::string fileName = AnalyzerT::outputFileName(".dat");
+         system().fileMaster().openOutputFile(fileName, outputFile_);
+      }
+      // Note: ReadParameters method of derived classes should call this,
+      // determine nValue and then call initializeAccumulators(nValue).
+   }
+
+   /*
+   * Setup before simulation.
+   */
+   template <int D, class T>
+   void AverageListAnalyzer<D,T>::setup()
+   {
+      UTIL_CHECK(hasAccumulators_);
+      clearAccumulators();
+   }
+
+   /*
+   * Compute and sample current values.
+   */
+   template <int D, class T>
+   void AverageListAnalyzer<D,T>::sample(long iStep)
+   {
+      UTIL_CHECK(hasAccumulators_);
+      if (AnalyzerT::isAtInterval(iStep)) {
+         compute();
+         updateAccumulators(iStep);
+      }
+   }
+
+   /*
+   * Output results after a simulation is completed.
+   */
+   template <int D, class T>
+   void AverageListAnalyzer<D,T>::output()
+   {
+      UTIL_CHECK(hasAccumulators_);
+
+      // Close data file, if any
+      if (outputFile_.is_open()) {
+         outputFile_.close();
+      }
+
+      #if 0
+      // Write parameter (*.prm) file
+      std::string filename = AnalyzerT::outputFileName(".prm");
+      system().fileMaster().openOutputFile(filename, outputFile_);
+      ParamComposite::writeParam(outputFile_);
+      outputFile_.close();
+      #endif
+
+      // Write average (*.ave) and error analysis (*.aer) files
+      outputAccumulators();
+   }
+
+   /**
+   * Set nValue and allocate arrays with dimensions nValue.
+   */
+   template <int D, class T>
+   void AverageListAnalyzer<D,T>::initializeAccumulators(int nValue)
+   {
+      UTIL_CHECK(nValue > 0);
+      UTIL_CHECK(nValue_ == 0);
+      UTIL_CHECK(nSamplePerOutput_ >= 0);
+
+      // Allocate arrays
+      accumulators_.allocate(nValue);
+      names_.allocate(nValue);
+      values_.allocate(nValue);
+      nValue_ = nValue;
+      hasAccumulators_ = true;
+
+      // Set the accumulators to compute block averages with
+      // nSamplePerOutput_ sampled values per block
+      for (int i = 0; i < nValue_; ++i) {
+         accumulators_[i].setNSamplePerBlock(nSamplePerOutput_);
+      }
+
+      clearAccumulators();
+   }
+
+   /*
+   * Clear accumulators.
+   */
+   template <int D, class T>
+   void AverageListAnalyzer<D,T>::clearAccumulators()
+   {
+      UTIL_CHECK(hasAccumulators_);
+      UTIL_CHECK(nValue_ > 0);
+      for (int i = 0; i < nValue_; ++i) {
+         accumulators_[i].clear();
+      }
+   }
+
+   /*
+   * Set the name string for variable with index i.
+   */
+   template <int D, class T>
+   void AverageListAnalyzer<D,T>::setName(int i, std::string name)
+   {
+      UTIL_CHECK(hasAccumulators_);
+      UTIL_CHECK(i >= 0 && i < nValue_);
+      names_[i] = name;
+   }
+
+   /*
+   * Update accumulators for all current values.
+   */
+   template <int D, class T>
+   void AverageListAnalyzer<D,T>::updateAccumulators(long iStep)
+   {
+      UTIL_CHECK(hasAccumulators_);
+      UTIL_CHECK(accumulators_.capacity() == nValue_);
+
+      // Update accumulators.
+      for (int i = 0; i < nValue(); ++i) {
+         double data = value(i);
+         accumulators_[i].sample(data);
+      }
+
+      // Output block averages
+      if (nSamplePerOutput_ > 0) {
+         if (accumulators_[0].isBlockComplete()) {
+            UTIL_CHECK(outputFile_.is_open());
+            int interval = AnalyzerT::interval();
+            int beginStep = iStep - (nSamplePerOutput_ - 1) * interval;
+            outputFile_ << Int(beginStep);
+            for (int i = 0; i < nValue(); ++i) {
+               UTIL_CHECK(accumulators_[i].isBlockComplete());
+               double block = accumulators_[i].blockAverage();
+               outputFile_ << Dbl(block);
+            }
+            outputFile_ << "\n";
+         }
+      }
+
+   }
+
+   /*
+   * Output results to file after simulation is completed.
+   */
+   template <int D, class T>
+   void AverageListAnalyzer<D,T>::outputAccumulators()
+   {
+      UTIL_CHECK(hasAccumulators_);
+
+      // Close data (*.dat) file, if any
+      if (outputFile_.is_open()) {
+         outputFile_.close();
+      }
+
+      // Compute maximum length of name field
+      int nameWidth = 0;
+      int length;
+      for (int i = 0; i < nValue_; ++i) {
+         length = names_[i].length();
+         if (length > nameWidth) {
+            nameWidth = length;
+         }
+      }
+      nameWidth += 2;
+
+      // Write average (*.ave) file
+      std::string fileName = AnalyzerT::outputFileName(".ave");
+      system().fileMaster().openOutputFile(fileName, outputFile_);
+      double ave, err;
+      for (int i = 0; i < nValue_; ++i) {
+         ave = accumulators_[i].average();
+         err = accumulators_[i].blockingError();
+         outputFile_ << " " << std::left << std::setw(nameWidth)
+                      << names_[i] << "   ";
+         outputFile_ << Dbl(ave) << " +- " << Dbl(err, 9, 2) << "\n";
+      }
+      outputFile_.close();
+
+      // Write error analysis (*.aer) file
+      fileName = AnalyzerT::outputFileName(".aer");
+      system().fileMaster().openOutputFile(fileName, outputFile_);
+      std::string line;
+      line =
+      "------------------------------------------------------------------";
+      for (int i = 0; i < nValue_; ++i) {
+         outputFile_ << line << std::endl;
+         outputFile_ << names_[i] << " :" << std::endl;
+         accumulators_[i].output(outputFile_);
+         outputFile_ << std::endl;
+      }
+      outputFile_.close();
+
+      #if 0
+      // Write data format file (*.dfm) file
+      fileName = AnalyzerT::outputFileName();
+      fileName += ".dfm";
+      system().fileMaster().openOutputFile(fileName, outputFile_);
+      outputFile_ << "Value = " << nValue() << std::endl;
+      outputFile_ << "iStep  ";
+      for (int i = 0; i < nValue_; ++i) {
+         outputFile_ << names_[i] << "  ";
+      }
+      outputFile_ << std::endl;
+      outputFile_.close();
+      #endif
+
+   }
+
+}
+}
+#endif

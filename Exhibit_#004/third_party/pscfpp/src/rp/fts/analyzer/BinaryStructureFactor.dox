@@ -1,0 +1,125 @@
+namespace Pscf {
+namespace Rp {
+
+/*! 
+\page rp_BinaryStructureFactor_page BinaryStructureFactor
+
+This analyzer computes the structure factor for any "binary" system, 
+with only two types of monomer. By default, it computes and outputs 
+only the spherical average of the structure factor, for which each
+value is an averaged over all wavevectors in a set (or "bunch") of
+wavevectors of equal magnitude. This class can also optionally 
+output structure factors for all individual wavevectors.
+
+\see BinaryStructureFactor (class API)
+
+\section rp_BinaryStructureFactor_formula_sec Theory
+
+This class computes the structure factor \f$ S({\bf q}) \f$ for an 
+incompressible system containing two monomer types, for all values
+of the wavevector \f$ {\bf q} \f$. Let the two monomer types be denoted
+by subscripts 0 and 1. The structure factor computed here is defined 
+as
+\f[
+  S(\mathbf{q}) 
+  = \frac{1}{4V}\langle |\hat{C}_{-}({\bf q})|^{2} \rangle \quad,
+\f]
+where \f$ V \f$ is total system volume, and 
+\f[
+  \hat{C}_{-}({\bf q}) \equiv \int \! d{\bf r} 
+                       \; e^{-i{\bf q}\cdot {\bf r}}
+                       [ c_{0}({\bf r}) - c_{1}({\bf r}) ] 
+  \quad.
+\f]
+Here, \f$ c_{i}({\bf r}) \f$ is the local concentration of monomers of 
+type i, for i = 0 and i =1.
+In a field-theoretic simulation, this is computed using the identity
+\f[
+  S(\mathbf{q}) = 
+  \frac{1}{v^2\chi^2} \frac{1}{V}
+  \left\langle |\hat{W}_{-}(\mathbf {q})|^{2} \right\rangle
+   - \frac{1}{2v \chi} 
+\f]
+where \f$ v \f$ is monomer volume, \f$ \chi \f$ is the bare Flory-Huggins 
+parameter \f$ \chi = \chi_{12} - (\chi_{11} + \chi_{22})/2  \f$, and
+\f[
+  \hat{W}_{-}({\bf q}) = \int \! d{\bf r} 
+  \; e^{-i{\bf q}\cdot {\bf r}} 
+  [ w_{0}({\bf r}) - w_{1}({\bf r})]/2 
+\f]
+is the Fourier transform of the exchange field 
+\f$ W_{-}({\bf r}) = [ w_{0}({\bf r}) - w_{1}({\bf r})]/2 \f$.
+
+<em> Technical note </em>:
+The Fourier transform \f$ \hat{W}_{-}({\bf q}) \f$ that is defined above 
+as an integral is approximated internally by the product of the system 
+volume \f$ V \f$ and the normalized discrete Fourier transform (DFT) of 
+\f$ W_{-}({\bf r}) \f$ that is computed by either 
+Prdc::Cpu::FFT::forwardTransform or
+Prdc::Cuda::FFT::forwardTransform .
+
+\section rp_BinaryStructureFactor_parameter_sec Parameter file
+
+Parameter file format:
+\code
+BinaryStructureFactor{
+  interval*          int   (1 by default)
+  outputFileName     string
+  writeWaveData*     bool  (false by default)
+}
+\endcode
+Meanings of the parameters:
+<table>
+  <tr>
+    <td> <b> Label </b>  </td>
+    <td> <b> Description </b>  </td>
+  </tr>
+  <tr>
+    <td> interval* </td>
+    <td> number of steps between data samples </td>
+  </tr>
+  <tr>
+     <td> outputFileName </td>
+     <td> base name of output files </td>
+  </tr>
+  <tr>
+     <td> writeWaveData* </td>
+     <td> Should \f$ S({\bf q})\f$ be reported for individual waves? </td>
+  </tr>
+</table>
+Note that the writeWaveData parameter is optional, and set to false (or 0) 
+by default. 
+
+\section rp_BinaryStructureFactor_output_sec Output Files
+
+This class does not output any data during the course of a simulation
+or trajectory file analysis, but instead outputs accumulated results 
+at the end.
+
+<b> Spherically-averaged structure factor </b>:
+At the end of the simulation, this class outputs a file containing 
+spherically-averaged values of \f$ S({\bf q}) \f$, averaged over time 
+and over groups of wavevectors of the same magnitude. If writeWaveData 
+is false (0. the default), then the name of this file is given by the 
+outputFileName string parameter. If writeWaveData is set to true (1), 
+then the name of this file is obtained by adding a suffix "_ave" to the 
+end of the outputFileName string. In either case, the resulting file will 
+contain two columns of numbers, in which the first column contains an 
+ordered list of values of wavenumber \f$ q \f$, and the second column
+contains a corresponding list of values of the spherically averaged 
+structure factor \f$ S(q) \f$. 
+
+<b> Structure factor for individual wavevectors </b>:
+If writeWaveData is true, the class also outputs a second file containing
+values of S(q) for individual wavevectors at the end of a simulation. 
+The name of this file is obtained by adding a suffix "_wave" to the 
+end of the outputFileName string parameter.  The first D columns of 
+this file contain integer indices for individual waves, using a 
+standard DFT grid representation in which all indices are non-negative.
+These D columns are followed by a column containing the time averaged 
+value of \f$ S({\bf q}) \f$ for each wavevector.
+
+*/
+
+}
+}

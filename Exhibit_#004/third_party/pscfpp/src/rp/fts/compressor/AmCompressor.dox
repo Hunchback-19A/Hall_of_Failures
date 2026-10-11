@@ -1,0 +1,121 @@
+/*! 
+\page rp_AmCompressor_page AmCompressor
+
+The AmCompressor classes used by both the pscf_rpc and pscf_rpg programs 
+each implement a \ref pscf_AmIteratorTmpl_page "Anderson mixing" 
+compressor algorithm.  Two closely analogous classes named 
+Pscf::Rpc::AmCompressor and Pscf::Rpg::AmCompressor implement this 
+algorithm for the pscf_rpc CPU program and the pscf_rpg GPU-accelerated 
+program, respectively. These two classes implement the same step 
+algorithm and use the same parameter file format, as documented below.
+
+\section rp_AmCompressor_algorithm_sec Step Algorithm
+
+A general discussion of compressor algorithms for PS-FTS is given 
+\ref psfts_algorithm_page "here". The implementation of the AM 
+mixing algorithm used in PSCF is discussed in the article:
+ <a href="https://doi.org/10.1063/5.0264036">
+"Improved algorithm for identifying partial saddle-points in polymer
+field theoretic simulations", K. Chen and D.C. Morse, 
+<em> J. Chem. Phys. </em> <b> 162 </b>, 243901 (2025). </a>,
+
+\section rp_AmCompressor_parameter_sec Parameter file
+
+The only required parameter for this algorithm is the error threshhold
+"epsilon". A minimal parameter file block could thus look something like
+this:
+\code
+  AmCompressor{
+    epsilon      1.0E-4
+  }
+\endcode
+The full parameter file format, including all optional parameters, is 
+shown below:
+\code
+AmCompressor{
+  epsilon           float
+  maxItr*           int     (100 by default)
+  maxHist           int     (50 by default)
+  verbose           int     (0 by default)
+  errorType*        string  ("norm", "rms", "max", or "relNorm". "rms" by default)
+  lambda*           real    (1.0 by default)
+  useLambdaRamp*    bool    (true by default)
+  r*                real    (0.9 by default)
+}
+\endcode
+Meanings of all parameters are explained in the general discussion of 
+\ref pscf_AmIteratorTmpl_page "Anderson mixing algorithms", and more
+briefly summarized below:
+<table>
+  <tr>
+    <td> <b> Label </b>  </td>
+    <td> <b> Description </b>  </td>
+  </tr>
+  <tr>
+    <td> epsilon </td>
+    <td> error tolerance (Required) </td>
+  </tr>
+  <tr>
+    <td>  maxItr* </td>
+    <td>  
+    maximum number of iterations to attempt before declaring failure 
+    (100 by default)
+    </td>
+  </tr>
+  <tr>
+    <td>  maxHist* </td>
+    <td>  
+   maximum number of previous states to retain in history 
+    (50 by default)
+    </td>
+  </tr>
+  <tr>
+    <td>  verbose* </td>
+    <td>  verbosity level 0, 1, or 2. Lower values are less verbose. 
+          (0 by default)
+    </td>
+  </tr>
+  <tr>
+    <td> errorType* </td>
+    <td> Identifer for the choice of a definition for the scalar error . 
+         Meaning of the allowed values are "norm", "rms" "max", and 
+         "relNorm", are discussed \ref pscf_AmIteratorTmpl_page "here".
+         ("rms" by default) </td>
+  </tr>
+  <tr>
+    <td> lambda* </td>
+    <td> Mixing parameter \f$ \lambda \f$ in a standard mixing 
+         \ref pscf_AmIteratorTmpl_algo_correct_sub "correction step" for 
+         an \ref pscf_AmIteratorTmpl_page "Anderson mixing algorithm".
+         (1.0 by default) </td>
+  </tr>
+  <tr>
+    <td> useLambdaRamp* </td>
+    <td> If true, use slow ramp-up of mixing parameter, as discussed
+         \ref pscf_AmIteratorTmpl_algo_correct_sub "here". (true by
+         default) </td>
+  </tr>
+  <tr>
+    <td> r* </td>
+    <td> Ratio \f$ r \f$ used in formula for ramp factor \f$ \alpha \f$ 
+         that multiplies the mixing parameter, as discussed 
+         \ref pscf_AmIteratorTmpl_algo_correct_sub "here". 
+         (0.9 by default, only valid if useLambdaRamp is true) </td>
+  </tr>
+</table>
+
+\section rp_AmCompressor_residual_sec Residual definition
+
+The residual vector for the AmCompressor is defined in real space, as 
+an array in which each element is associated with one node of a regular 
+computational grid. The value \f$ R({\bf r}) \f$ of the residual element 
+associated with a grid point located at position \f$ {\bf r} \f$ is 
+given by
+\f[
+    R({\bf r}) = -1 + \sum_{i=1}^{N_{\rm m}} \phi_{i}({\bf r}) 
+\f]
+where \f$ \phi_{i}({\bf r}) \f$ is the volume fraction of monomer type 
+\f$ i \f$ at that grid point, and \f$ N_{\rm m} \f$ is the number of 
+monomer types, also known as nMonomer.
+
+*/

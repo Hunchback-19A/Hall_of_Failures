@@ -1,0 +1,55 @@
+namespace Pscf {
+namespace Rp {
+
+/*! 
+\page rp_TrajectoryWriter_page TrajectoryWriter
+
+This analyzer periodically writes the w-field configuration to
+a trajectory file during a simulation, appending an additional
+frame to file for each such configuration.  The resulting file 
+can be read and analyzed after a simulation is completed by 
+invoking the ANALYZE command.
+
+\see TrajectoryWriter (class API)
+
+\section rp_TrajectoryWriter_parameter_sec Parameter file
+
+The parameter file format for the associated block is shown below:
+\code
+TrajectoryWriter{
+  interval*        int     (1 by default)
+  outputFileName   string
+}
+\endcode
+Meanings of the parameters are described briefly 
+below:
+<table>
+  <tr>
+    <td> <b> Label </b>  </td>
+    <td> <b> Description </b>  </td>
+  </tr>
+  <tr>
+    <td> interval* </td>
+    <td> number of steps between consecutive frames </td>
+  </tr>
+    <tr>
+     <td> outputFileName </td>
+     <td> name of output trajectory file </td>
+  </tr>
+</table>
+
+\section rp_TrajectoryWriter_output_sec Output
+
+During the simulation, the w-field configuration is output to file 
+{outputFileName} every interval simulation steps.
+
+The resulting file contains a header section followed by a sequence
+of frames. The header has the same format as the header of an r-grid 
+field file that holds a single field configuration. Each frame in a
+trajectory file uses the same format as that used for the data 
+section of an r-grid field file. 
+
+*/
+
+}
+}

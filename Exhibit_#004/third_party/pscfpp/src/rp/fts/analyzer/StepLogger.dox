@@ -1,0 +1,37 @@
+namespace Pscf {
+namespace Rp {
+
+/*! 
+\page rp_StepLogger_page StepLogger
+
+The StepLogger class periodically outputs the current value of the
+simulation step counter, to indicate the progress of a calculation.
+Output is written to standard output, i.e., to screen unless 
+redirected to a file. 
+
+\see StepLogger (class API)
+
+\section rp_StepLogger_parameter_sec Parameter file
+
+The parameter file format is shown below:
+\code
+StepLogger{
+  interval*    int  (1 by default)
+}
+\endcode
+Meaning of the only parameter:
+<table>
+  <tr>
+    <td> <b> Label </b>  </td>
+    <td> <b> Description </b>  </td>
+  </tr>
+  <tr>
+    <td> interval* </td>
+    <td> number of steps between outputs of the step counter </td>
+  </tr>
+</table>
+
+*/
+
+}
+}

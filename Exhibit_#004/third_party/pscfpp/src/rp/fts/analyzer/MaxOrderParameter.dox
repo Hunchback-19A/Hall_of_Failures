@@ -1,0 +1,95 @@
+namespace Pscf {
+namespace Rp {
+
+/*! 
+\page rp_MaxOrderParameter_page MaxOrderParameter
+
+This analyzer calculates the maximum amplitude of the 
+second power of Fourier modes of exchange fields, referred
+to as the max order parameter. This analyzer is commonly 
+used to identify order-disorder transition (ODT) that occur 
+spontaneously during a transition, and to help classify 
+states as ordered or disordered.
+
+\see MaxOrderParameter (class API)
+
+\section rp_MaxOrderParameter_algorithm_sec Definition
+
+Let \f$ \Psi\f$ denote the maximum square-magnitude of the 
+Fourier coefficients of \f$ W_{-} \f$, such that
+\f[
+   \Psi 
+   \equiv \max_{\bf G} \left[ |W_{-}(\mathbf{G})|^{2} \right]
+\f]
+where \f$ \bf G \f$ denotes a wavevector used to compute a DFT,
+and the maximum is over all wavevectors.  
+
+\section rp_MaxOrderParameter_parameter_sec Parameter file
+
+Parameter file format:
+\code
+MaxOrderParameter{
+  interval*          int      (1 by default)
+  outputFileName     string
+  nSamplePerBlock*   int      (1 by default)
+}
+\endcode
+Meanings of the parameters:
+<table>
+  <tr>
+    <td> <b> Label </b>  </td>
+    <td> <b> Description </b>  </td>
+  </tr>
+  <tr>
+    <td> interval* </td>
+    <td> number of steps between data samples </td>
+  </tr>
+    <tr>
+     <td> outputFileName </td>
+     <td> name of output file </td>
+  </tr>
+  <tr>
+     <td>nSamplePerBlock* </td>
+     <td>number of samples per block average output to file </td>
+  </tr>
+</table>
+
+\section rp_MaxOrderParameter_output_sec Output
+
+In what follows, the symbol "{outputFileName}" is used to represent 
+the string value of the outputFileName parameter within descriptions 
+of output file names.
+
+<b> Output during a simulation</b>:
+
+If nSamplePerOutput > 1, then block average values 
+\f$ \Psi \f$, averaged over blocks of nSamplePerOutput 
+sequential samples, are output to the file {outputFileName}.dat every 
+interval \* nSamplerPerBlock simulation steps or trajectory frames.
+
+If nSamplePerOutput == 1, or if this optional parameter is omitted, 
+then the indices of the wavevector associated with the maximum 
+Fourier amplitude are output along with corresponding value of 
+\f$ \Psi \f$ every interval time steps or trajectory frames, with 
+no block averaging.
+
+If nSamplerPerBlock = 0, then {outputFileName}.dat data file is not
+created.
+
+<b> Final output </b>:
+
+At the end of the simulation or trajectory file analysis:
+
+  - The sequence average of \f$ \Psi \f$ and an estimated 
+    error on this average are output to the file {outputFileName}.ave
+
+  - Details of the error analysis are output to the file 
+    {outputFileName}.aer
+
+See the discussion of \ref psfts_algo_analyzer_error_sec "error analysis"
+for further details.
+
+*/
+
+}
+}
