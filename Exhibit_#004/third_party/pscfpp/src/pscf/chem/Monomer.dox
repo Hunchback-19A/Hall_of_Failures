@@ -1,0 +1,23 @@
+namespace Pscf{
+/*! 
+\page pscf_Monomer_page Monomer
+
+A Pscf::Monomer object represents a monomer type. 
+
+The data associated with a Monomer can be read and written to C++ iostreams 
+using overloaded insertion (<<) and extraction (>>) operators. The only
+data required to initialize a Monomer is the value of the kuhn length or
+statistical segment length. The text representation for a monomer thus has
+the form
+\code
+     kuhn (float)
+\endcode
+where "kuhn" denote the value of the monomer statistical segment length. 
+
+Note: This text representation does not contain information about the "id" 
+member variable, which associates an integer index with each monomer type.
+When Monomer objects are stored in an array, the id is set equal to the 
+array element index.
+
+*/
+}
