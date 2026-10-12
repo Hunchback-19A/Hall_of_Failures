@@ -1,0 +1,177 @@
+#ifndef LABEL_TEST_H
+#define LABEL_TEST_H
+
+#include <test/UnitTest.h>
+#include <test/UnitTestRunner.h>
+
+#include <util/param/Label.h>
+#include <util/param/OptionalLabel.h>
+#include <util/param/BracketPolicy.h>
+#include <util/global.h>
+
+#include <iostream>
+#include <fstream>
+
+using namespace Util;
+
+class LabelTest : public UnitTest 
+{
+
+public:
+
+   void setUp()
+   { 
+      BracketPolicy::set(BracketPolicy::Optional);
+      Label::clear();
+   }
+
+   void tearDown()
+   {}
+
+   void testLabelConstructor1() 
+   {
+      printMethod(TEST_FUNC);
+      Label label("MyLabel");
+      TEST_ASSERT(Label::isClear());
+      TEST_ASSERT(!Label::isMatched());
+
+   }
+
+   void testLabelConstructor2() 
+   {
+      printMethod(TEST_FUNC);
+      Label label("MyLabel", false);
+      TEST_ASSERT(Label::isClear());
+      TEST_ASSERT(!Label::isMatched());
+   }
+
+   void testLabelConstructor3() 
+   {
+      printMethod(TEST_FUNC);
+      OptionalLabel label("MyLabel");
+      TEST_ASSERT(Label::isClear());
+      TEST_ASSERT(!Label::isMatched());
+   }
+
+   void testExtractor1() 
+   {
+      printMethod(TEST_FUNC);
+      Label label("MyLabel");
+      std::ifstream in;
+      openInputFile("in/Label", in);
+
+      in >> label;
+      TEST_ASSERT(Label::isClear());
+      TEST_ASSERT(Label::isMatched());
+
+      in >> Label("YourLabel");
+      TEST_ASSERT(Label::isClear());
+      TEST_ASSERT(Label::isMatched());
+
+      in >> OptionalLabel("NotThere");
+      TEST_ASSERT(!Label::isMatched());
+      TEST_ASSERT(Label::isClear());
+
+      in.close();
+   }
+
+   void testExtractor2() 
+   {
+      printMethod(TEST_FUNC);
+      std::ifstream in;
+      openInputFile("in/Label", in);
+      TEST_ASSERT(Label::isClear());
+      TEST_ASSERT(!Label::isMatched());
+
+      Label label0("WrongLabel", false);
+      in >> label0;
+      TEST_ASSERT(!Label::isClear());
+      TEST_ASSERT(!Label::isMatched());
+
+      OptionalLabel label1("AnotherLabel");
+      TEST_ASSERT(!label1.match(in));
+      TEST_ASSERT(!Label::isClear());
+
+      Label label2("MyLabel", false);
+      in >> label2;
+      TEST_ASSERT(Label::isClear());
+      TEST_ASSERT(Label::isMatched());
+
+      Label label3("YourLabel");
+      in >> label3;
+      TEST_ASSERT(Label::isClear());
+      TEST_ASSERT(Label::isMatched());
+
+      OptionalLabel label4("LastLabel");
+      TEST_ASSERT(!label4.match(in));
+      in.close();
+   }
+
+   #ifndef UTIL_MPI
+   void testExtractor3() 
+   {
+      printMethod(TEST_FUNC);
+      Label label0("WrongLabel", false);
+      Label label1("AnotherLabel", false);
+      Label label2("MyLabel", false);
+      Label label3("YourLabel", true);
+      std::ifstream in;
+      openInputFile("in/Label", in);
+      in >> label0;
+      in >> label1;
+      printEndl();
+      try {
+         in >> label3;
+      } catch (Util::Exception& e) {
+         std::cout << "Caught expected Exception" << std::endl;
+         Label::clear();
+      }
+      in.close();
+   }
+   #endif
+
+   void testInserter() 
+   {
+      printMethod(TEST_FUNC);
+      printEndl();
+      Label label("MyLabel");
+      std::cout << label;
+      std::cout << "\n"; 
+   }
+
+   void testRead()
+   {
+      printMethod(TEST_FUNC);
+      std::ifstream in;
+      openInputFile("in/Label", in);
+      Label::read(in);
+      Label::setIsMatched(false);
+      TEST_ASSERT(Label::isMatched() == false);
+      TEST_ASSERT(Label::buffer() == "MyLabel");
+
+      Label::read(in); // should do nothing, buffer not clear
+
+      // Make label object and use >> operator. This will not
+      // read a new string since buffer is not clear, but it
+      // will perform string matching tests
+      Label label("MyLabel", true);
+      in >> label; 
+      TEST_ASSERT(Label::isMatched());
+   }
+
+};
+
+
+TEST_BEGIN(LabelTest)
+TEST_ADD(LabelTest, testLabelConstructor1)
+TEST_ADD(LabelTest, testLabelConstructor2)
+TEST_ADD(LabelTest, testExtractor1)
+TEST_ADD(LabelTest, testExtractor2)
+#ifndef UTIL_MPI
+TEST_ADD(LabelTest, testExtractor3)
+#endif
+TEST_ADD(LabelTest, testInserter)
+TEST_ADD(LabelTest, testRead)
+TEST_END(LabelTest)
+
+#endif
