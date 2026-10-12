@@ -1,0 +1,59 @@
+/*
+* PSCF - Mixture Self-Consistent Field Theory
+*
+* Copyright 2015 - 2025, The Regents of the University of Minnesota
+* Distributed under the terms of the GNU General Public License.
+*/
+
+#include "Mixture.h"
+#include "Polymer.h"
+#include "Solvent.h"
+#include "Block.h"
+#include "Propagator.h"
+#include <rpc/field/FieldIo.h>
+#include <prdc/cpu/FFT.h>
+#include <prdc/cpu/RField.h>
+#include <pscf/cpu/VecOp.h>
+
+#include <rp/solvers/Mixture.tpp>
+
+namespace Pscf {
+namespace Rpc {
+
+   using namespace Prdc;
+
+   /*
+   * Allocate memory for all blocks.
+   */
+   template <int D>
+   void Mixture<D>::allocateBlocks()
+   {
+      const double ds = RpMixtureT::ds();
+      const int np = MixtureBaseT::nPolymer();
+      int i, j;
+      for (i = 0; i < np; ++i) {
+         for (j = 0; j < polymer(i).nBlock(); ++j) {
+            polymer(i).block(j).allocate(ds);
+         }
+      }
+   }
+
+} 
+} 
+
+// Explicit instantiation definitions
+namespace Pscf {
+   template class MixtureTmpl< Rpc::Polymer<1>, Rpc::Solvent<1> >;
+   template class MixtureTmpl< Rpc::Polymer<2>, Rpc::Solvent<2> >;
+   template class MixtureTmpl< Rpc::Polymer<3>, Rpc::Solvent<3> >;
+   namespace Rp { 
+      template class Mixture<1, Rpc::Types<1> >;
+      template class Mixture<2, Rpc::Types<2> >;
+      template class Mixture<3, Rpc::Types<3> >;
+   }
+   namespace Rpc { 
+      template class Mixture<1>;
+      template class Mixture<2>;
+      template class Mixture<3>;
+   }
+}
